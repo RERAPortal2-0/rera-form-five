@@ -82,8 +82,7 @@ public class Util {
 		{
 			
 		}
-	
-		
+
 		Util fiscalDate = new Util(startDate); 
 		  int year = fiscalDate.getFiscalYear();
           
