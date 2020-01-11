@@ -14,7 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 
 @Entity(name = "ProjectFormFiveModel")
@@ -28,7 +31,6 @@ public class ProjectFormFiveModel implements Serializable{
 
 	@Column(name = "PROJECT_ID")
 	private Long projectId;
-	
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "PROJECT_FORM_FIVE_FK")
@@ -62,7 +64,8 @@ public class ProjectFormFiveModel implements Serializable{
 	@Column(name="PROMOTER_MOBILE_NO")
 	private String promoterMobileNo;
 	
-	@javax.persistence.Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON")
 	private Calendar createdOn;
 

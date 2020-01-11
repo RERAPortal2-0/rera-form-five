@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import in.gov.rera.form.five.common.model.DmsModel;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
+import in.gov.rera.form.five.model.CAModel;
 import in.gov.rera.form.five.model.ProjectRegistrationModel;
 
 
@@ -45,6 +46,14 @@ public class RestTamplateUtility {
 		return object.getBody();
 	}
 
+	public static CAModel caDtl(String caNumber,String url) throws ResourceNotFoundException {
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<CAModel> object = restTemplate.exchange(url + caNumber, HttpMethod.GET, null,
+				new ParameterizedTypeReference<CAModel>() {
+				});
+		return object.getBody();
+	}
 	/*
 	 * public static void main(String[] args) throws ResourceNotFoundException {
 	 * System.out.println(projectDtl(1L, "http://15.206.175.42/project_reg/1")); }

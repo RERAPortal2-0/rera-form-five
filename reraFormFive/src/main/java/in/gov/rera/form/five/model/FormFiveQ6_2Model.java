@@ -18,13 +18,24 @@ public class FormFiveQ6_2Model{
 	private Long projectFormFiveQ62Id;
 	
 	@Column(name = "NUMBER_OF_BOOKED_UNITS")
-	private Long numberOfBookedUnits;
+	private String numberOfBookedUnits;
 	
 	@Column(name = "AMT_COLLECTED_BOOKING")
-	private Long amtCollectedBooking;
+	private String amtCollectedBooking;
 	
 	@Column(name = "TOTAL_CONSIDER_BOOKING")
-	private Long totalConsiderBooking;
+	private String totalConsiderBooking;
+
+	@Column(name="FORM_FIVE_PK")
+	private Long formFiveId;
+	
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
 
 	public Long getProjectFormFiveQ62Id() {
 		return projectFormFiveQ62Id;
@@ -34,29 +45,31 @@ public class FormFiveQ6_2Model{
 		this.projectFormFiveQ62Id = projectFormFiveQ62Id;
 	}
 
-	public Long getNumberOfBookedUnits() {
+	public String getNumberOfBookedUnits() {
 		return numberOfBookedUnits;
 	}
 
-	public void setNumberOfBookedUnits(Long numberOfBookedUnits) {
+	public void setNumberOfBookedUnits(String numberOfBookedUnits) {
 		this.numberOfBookedUnits = numberOfBookedUnits;
 	}
 
-	public Long getAmtCollectedBooking() {
+	public String getAmtCollectedBooking() {
 		return amtCollectedBooking;
 	}
 
-	public void setAmtCollectedBooking(Long amtCollectedBooking) {
+	public void setAmtCollectedBooking(String amtCollectedBooking) {
 		this.amtCollectedBooking = amtCollectedBooking;
 	}
 
-	public Long getTotalConsiderBooking() {
+	public String getTotalConsiderBooking() {
 		return totalConsiderBooking;
 	}
 
-	public void setTotalConsiderBooking(Long totalConsiderBooking) {
+	public void setTotalConsiderBooking(String totalConsiderBooking) {
 		this.totalConsiderBooking = totalConsiderBooking;
 	}
+
+	
 		
 	
 }

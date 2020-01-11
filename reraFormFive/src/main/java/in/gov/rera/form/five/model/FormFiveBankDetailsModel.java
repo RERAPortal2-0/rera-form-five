@@ -1,17 +1,11 @@
 package in.gov.rera.form.five.model;
 
-
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name = "FormFiveBankDetailsModel")
@@ -22,183 +16,222 @@ public class FormFiveBankDetailsModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "FRM_FIVE_BANK_ID")
 	private Long frmFiveBankId;
-	
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="BANK_ID") private BankModel bankModel;
-	 */
-	
+
+	@Column(name = "FORM_FIVE_FK")
+	private Long formFiveId;
+
 	@Column(name = "BANK_CODE")
 	private String bankCode;
+
+	@Column(name = "BANK_NAME",nullable=false, length=512)
+	private String bankName;
 	
-	@Column(name = "BRANCH_NAME")
+	@Column(name = "BRANCH_NAME" ,nullable=false, length=512)
 	private String branchName;
-	
-	@Column(name = "ACC_NAME")
+
+	@Column(name = "ACC_NAME" ,nullable=false, length=512)
 	private String accountName;
-	
-	@Column(name = "ACC_NO")
-	private String accountNumber;	
-	
-	@Column(name = "ACC_TYPE")
+
+	@Column(name = "ACC_NO" ,nullable=false, length=512)
+	private String accountNumber;
+
+	@Column(name = "ACC_TYPE" ,nullable=false, length=512)
 	private String accountType;
-	
-	@Column(name = "IFSC_CODE")
+
+	@Column(name = "IFSC_CODE" ,nullable=false, length=512)
 	private String ifscCode;
-	
-	@Column(name = "OPENING_BAL")
-	private String formFiveBOpeningBal;
-	
-	@Column(name = "OPENING_BAL_DATE")
-	private Date formFiveBOpeningBalDate;
-	
-	@Column(name = "OPENING_BALANCE_DATE")
+
+	@Column(name = "OPENING_BAL" ,nullable=false, length=512)
+	private String formFiveOpeningBal;
+
+	@Column(name = "OPENING_BALANCE_DATE" ,nullable=false)
 	private Date formFiveOpeningBalDate;
-	
-	@Column(name = "DEPOSITS")
-	private String formFiveBDeposit;
-	
-	@Column(name = "WITHDRAWALS")
-	private String formFiveBWithdrawals;
-	
-	public Date getFormFiveOpeningBalDate() {
-		return formFiveOpeningBalDate;
-	}
 
+	@Column(name = "DEPOSITS" ,nullable=false, length=512)
+	private String formFiveDeposit;
 
+	@Column(name = "WITHDRAWALS" ,nullable=false, length=512)
+	private String formFiveWithdrawals;
 
+	@Column(name = "CLOSING_BAL" ,nullable=false, length=512)
+	private String formFiveClosingBal;
 
-	public void setFormFiveOpeningBalDate(Date formFiveOpeningBalDate) {
-		this.formFiveOpeningBalDate = formFiveOpeningBalDate;
-	}
-	@Column(name = "CLOSING_BAL")
-	private String formFiveBClosingBal;
-	
-	@Column(name = "CLOSING_BAL_DATE")
+	@Column(name = "CLOSING_BAL_DATE" ,nullable=false)
 	private Date formFiveClosingBalanceDate;
-	
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name = "STATE") private StateUtModel BState;
-	 * 
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="DISTRICT_ID") private DistrictModel districtModel;
-	 */
 
+	@Column(name = "STATE_CODE")
+	private String stateCode;
 
+	@Column(name = "STATE_NAME")
+	private String stateName;
 
-	public String getformFiveBOpeningBalDateStr() {
-		if(formFiveBOpeningBalDate!=null){
-			SimpleDateFormat sf=new SimpleDateFormat("dd/MM/yyyy");
-			return	sf.format(formFiveBOpeningBalDate);
-		}
-		return null;
-	}
+	@Column(name="DATE_OF_ACCOUNT_OPENING" ,nullable=false)
+    private String dateOfAccountOpening;
 	
-	public String getformFiveOpeningBalDateStr() {
-		if(formFiveOpeningBalDate!=null){
-			SimpleDateFormat sf=new SimpleDateFormat("dd/MM/yyyy");
-			return	sf.format(formFiveOpeningBalDate);
-		}
-		return null;
-	}
-	
-	
-	
+	@Column(name = "DISTRICT_CODE")
+	private String districtCode;
 
-
+	@Column(name = "DISTRICT_NAME")
+	private String districtName;
 
 	public Long getFrmFiveBankId() {
 		return frmFiveBankId;
 	}
+
 	public void setFrmFiveBankId(Long frmFiveBankId) {
 		this.frmFiveBankId = frmFiveBankId;
 	}
+
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
 	public String getBankCode() {
 		return bankCode;
 	}
+
 	public void setBankCode(String bankCode) {
 		this.bankCode = bankCode;
 	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
 	public String getBranchName() {
 		return branchName;
 	}
+
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
+
 	public String getAccountName() {
 		return accountName;
 	}
+
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
+
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
+
 	public String getAccountType() {
 		return accountType;
 	}
+
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}
+
 	public String getIfscCode() {
 		return ifscCode;
 	}
+
 	public void setIfscCode(String ifscCode) {
 		this.ifscCode = ifscCode;
 	}
-	public String getFormFiveBOpeningBal() {
-		return formFiveBOpeningBal;
+
+	public String getFormFiveOpeningBal() {
+		return formFiveOpeningBal;
 	}
-	public void setFormFiveBOpeningBal(String formFiveBOpeningBal) {
-		this.formFiveBOpeningBal = formFiveBOpeningBal;
+
+	public void setFormFiveOpeningBal(String formFiveOpeningBal) {
+		this.formFiveOpeningBal = formFiveOpeningBal;
 	}
-	public Date getFormFiveBOpeningBalDate() {
-		return formFiveBOpeningBalDate;
+
+	public Date getFormFiveOpeningBalDate() {
+		return formFiveOpeningBalDate;
 	}
-	public void setFormFiveBOpeningBalDate(Date formFiveBOpeningBalDate) {
-		this.formFiveBOpeningBalDate = formFiveBOpeningBalDate;
+
+	public void setFormFiveOpeningBalDate(Date formFiveOpeningBalDate) {
+		this.formFiveOpeningBalDate = formFiveOpeningBalDate;
 	}
-	public String getFormFiveBDeposit() {
-		return formFiveBDeposit;
+
+	public String getFormFiveDeposit() {
+		return formFiveDeposit;
 	}
-	public void setFormFiveBDeposit(String formFiveBDeposit) {
-		this.formFiveBDeposit = formFiveBDeposit;
+
+	public void setFormFiveDeposit(String formFiveDeposit) {
+		this.formFiveDeposit = formFiveDeposit;
 	}
-	public String getFormFiveBWithdrawals() {
-		return formFiveBWithdrawals;
+
+	public String getFormFiveWithdrawals() {
+		return formFiveWithdrawals;
 	}
-	public void setFormFiveBWithdrawals(String formFiveBWithdrawals) {
-		this.formFiveBWithdrawals = formFiveBWithdrawals;
+
+	public void setFormFiveWithdrawals(String formFiveWithdrawals) {
+		this.formFiveWithdrawals = formFiveWithdrawals;
 	}
-	public String getFormFiveBClosingBal() {
-		return formFiveBClosingBal;
+
+	public String getFormFiveClosingBal() {
+		return formFiveClosingBal;
 	}
-	public void setFormFiveBClosingBal(String formFiveBClosingBal) {
-		this.formFiveBClosingBal = formFiveBClosingBal;
+
+	public void setFormFiveClosingBal(String formFiveClosingBal) {
+		this.formFiveClosingBal = formFiveClosingBal;
 	}
+
 	public Date getFormFiveClosingBalanceDate() {
 		return formFiveClosingBalanceDate;
 	}
-	
-	public String getFormFiveClosingBalanceDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		if(	null!=formFiveClosingBalanceDate)
-			return sf.format(formFiveClosingBalanceDate);
-			
-			return null;
-	}
-	
+
 	public void setFormFiveClosingBalanceDate(Date formFiveClosingBalanceDate) {
 		this.formFiveClosingBalanceDate = formFiveClosingBalanceDate;
 	}
-	
-	
+
+	public String getStateCode() {
+		return stateCode;
+	}
+
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getDateOfAccountOpening() {
+		return dateOfAccountOpening;
+	}
+
+	public void setDateOfAccountOpening(String dateOfAccountOpening) {
+		this.dateOfAccountOpening = dateOfAccountOpening;
+	}
+
+	public String getDistrictCode() {
+		return districtCode;
+	}
+
+	public void setDistrictCode(String districtCode) {
+		this.districtCode = districtCode;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
 }

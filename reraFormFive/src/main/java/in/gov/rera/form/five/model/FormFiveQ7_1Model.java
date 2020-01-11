@@ -1,22 +1,11 @@
 package in.gov.rera.form.five.model;
 
-
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity(name = "FormFiveQ7_1Model")
@@ -28,82 +17,57 @@ public class FormFiveQ7_1Model {
 	@Column(name = "PRO_FORM_FIVEQ7_1_ID")
 	private Long formFiveQ71Id;
 	
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="QUARTER_ID") private UserQuarterDetailsModel
-	 * userQuarterModel;
-	 */
-	
 	@Column(name = "PERIOD_FROM_DATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date  periodFromDate;
+	private String  periodFromDate;
 	
 	@Column(name = "PERIOD_TO_DATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date  periodToDate;			
+	private String  periodToDate;			
 	
-	@Column(name = "EXCESS_WITHDRAWAL_AMOUNT", columnDefinition = "Double default '0'")
-	private Double excessWithdrawalAmt;
+	@Column(name = "EXCESS_WITHDRAWAL_AMOUNT")
+	private String excessWithdrawalAmt;
 
-	@ManyToOne
-	@JoinColumn(name="PROJECT_FORM_FIVE_ID")
-	private FormFiveModel formFiveModel;
-	
-
-	/*
-	 * public UserQuarterDetailsModel getUserQuarterModel() { return
-	 * userQuarterModel; }
-	 * 
-	 * public void setUserQuarterModel(UserQuarterDetailsModel userQuarterModel) {
-	 * this.userQuarterModel = userQuarterModel; }
-	 */
-
-	public Date getPeriodFromDate() {
+	public String getPeriodFromDate() {
 		return periodFromDate;
 	}
-	
-	public String getPeriodFromDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		if(	null!=periodFromDate)
-			return sf.format(periodFromDate);
-			
-			return null;
-	}
 
-	public void setPeriodFromDate(Date periodFromDate) {
+	public void setPeriodFromDate(String periodFromDate) {
 		this.periodFromDate = periodFromDate;
 	}
 
-	public Date getPeriodToDate() {
+	public String getPeriodToDate() {
 		return periodToDate;
 	}
-	
-	public String getPeriodToDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-		
-		if(	null!=periodToDate)
-			return sf.format(periodToDate);
-			
-			return null;
-	}
 
-	public void setPeriodToDate(Date periodToDate) {
+	public void setPeriodToDate(String periodToDate) {
 		this.periodToDate = periodToDate;
 	}
 
-	public Double getExcessWithdrawalAmt() {
+	public String getExcessWithdrawalAmt() {
 		return excessWithdrawalAmt;
 	}
 
-	public void setExcessWithdrawalAmt(Double excessWithdrawalAmt) {
+	public void setExcessWithdrawalAmt(String excessWithdrawalAmt) {
 		this.excessWithdrawalAmt = excessWithdrawalAmt;
 	}
 
+	public Long getFormFiveQ71Id() {
+		return formFiveQ71Id;
+	}
 
+	public void setFormFiveQ71Id(Long formFiveQ71Id) {
+		this.formFiveQ71Id = formFiveQ71Id;
+	}
+
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
+	@Column(name="FORM_FIVE_FK")
+	private Long formFiveId;
 	
 	
 	

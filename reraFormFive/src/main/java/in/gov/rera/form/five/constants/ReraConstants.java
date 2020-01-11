@@ -61,9 +61,9 @@ public class ReraConstants {
 
 	
 	public static final String RESCIND = "RESCIND";
+	public static final String FORM_FIVE = "RESCIND";
 	
-	
-	public static final String ACTIVE_USER = "ACTIVE";
+	public static final String ACTIVE_USER = "FORM_FIVE";
 	public static final String ACTIVE = "ACTIVE";
 	public static final String INACTIVE_USER = "INACTIVE";
 	public static final String INACTIVE = "INACTIVE";

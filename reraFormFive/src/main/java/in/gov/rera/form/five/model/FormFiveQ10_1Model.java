@@ -1,20 +1,11 @@
 package in.gov.rera.form.five.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity(name = "FormFiveQ10_1Model")
@@ -30,23 +21,20 @@ public class FormFiveQ10_1Model {
 	@Column(name = "LANDER_NAME_TYPE")
 	private String landerNameType;
 	
-	@Column(name = "SANCTION_LOAN_AMT", columnDefinition = "Double default '0'")
-	private Long sanctionLoanAmt;
+	@Column(name = "SANCTION_LOAN_AMT")
+	private String sanctionLoanAmt;
 	
 	@Column(name = "SANCTION_DATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date sanctionDate;
+	private String sanctionDate;
 	
-	@Column(name = "OUTSTANDING_LOAN", columnDefinition = "Double default '0'")
-	private Long outStandingLoan;
+	@Column(name = "OUTSTANDING_LOAN")
+	private String outStandingLoan;
 		
 	@Column(name = "COLLATERAL_MORTGAGE_DELS")
 	private String collateralMortgateDls;
 	
-	@ManyToOne
-	@JoinColumn(name="PROJECT_FORM_FIVE_ID")
-	private FormFiveModel formFiveModel;
+	@Column(name="FORM_FIVE_FK")
+	private Long formFiveId;
 
 	public Long getProjectFormFiveQ101Id() {
 		return projectFormFiveQ101Id;
@@ -64,35 +52,27 @@ public class FormFiveQ10_1Model {
 		this.landerNameType = landerNameType;
 	}
 
-	public Long getSanctionLoanAmt() {
+	public String getSanctionLoanAmt() {
 		return sanctionLoanAmt;
 	}
 
-	public void setSanctionLoanAmt(Long sanctionLoanAmt) {
+	public void setSanctionLoanAmt(String sanctionLoanAmt) {
 		this.sanctionLoanAmt = sanctionLoanAmt;
 	}
 
-	public Date getSanctionDate() {
+	public String getSanctionDate() {
 		return sanctionDate;
 	}
 
-	public String getSanctionDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");		
-		if(	null!=sanctionDate)
-			return sf.format(sanctionDate);
-			
-			return null;
-	}
-	
-	public void setSanctionDate(Date sanctionDate) {
+	public void setSanctionDate(String sanctionDate) {
 		this.sanctionDate = sanctionDate;
 	}
 
-	public Long getOutStandingLoan() {
+	public String getOutStandingLoan() {
 		return outStandingLoan;
 	}
 
-	public void setOutStandingLoan(Long outStandingLoan) {
+	public void setOutStandingLoan(String outStandingLoan) {
 		this.outStandingLoan = outStandingLoan;
 	}
 
@@ -104,6 +84,15 @@ public class FormFiveQ10_1Model {
 		this.collateralMortgateDls = collateralMortgateDls;
 	}
 
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
+	
 
 			
 }

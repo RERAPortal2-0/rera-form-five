@@ -59,14 +59,10 @@ public class FormFiveModel implements Serializable {
 	}
 
 	@Column(name = "PERIOD_UNDER_CERT_FROM_DATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date certFromDate;
+	private String certFromDate;
 
 	@Column(name = "PERIOD_UNDER_CERT_TO_DATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date certToDate;
+	private String certToDate;
 
 	@Column(name = "Q_1", length = 5)
 	private String question_1;
@@ -74,9 +70,9 @@ public class FormFiveModel implements Serializable {
 	@Column(name = "Q_1_1", length = 5)
 	private String question_1_1;
 
-	@OneToMany
-	@JoinColumn(name = "Q_2_PRO_FORM_FIVE_BANK_ID")
-	private List<FormFiveModel> FormFiveBankld;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "FORM_FIVE_FK")
+	private List<FormFiveBankDetailsModel> formFiveBankList;
 
 	@Column(name = "Q_3", length = 15)
 	private String question_3;
@@ -85,13 +81,15 @@ public class FormFiveModel implements Serializable {
 	private String question_4;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<FormFiveQ4_1Model> formFiveQ4_1Model;
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveQ4_1Model> formFiveQ4_1List;
 
 	@Column(name = "Q_5", length = 5)
 	private String question_5;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<FormFiveQ5_1Model> formFiveQ5_1Model;
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveQ5_1Model> formFiveQ5_1List;
 
 	@Column(name = "Q_6", length = 10)
 	private String question_6;
@@ -103,7 +101,8 @@ public class FormFiveModel implements Serializable {
 	private String question_7;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<FormFiveQ7_1Model> projectFormFiveQ7_1Model;
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveQ7_1Model> projectFormFiveQ7_1List;
 
 	@Column(name = "Q_8", length = 5)
 	private String question_8;
@@ -118,10 +117,22 @@ public class FormFiveModel implements Serializable {
 	private String question_9;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<FormFiveQ9_1Model> projectFormFiveQ9_1Model;
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveQ9_1Model> projectFormFiveQ9_1List;
 
 	@Column(name = "Q_10", length = 5)
 	private String question_10;
+
+	@Column(name = "ESTIMATED_COST_OF_PROJECT")
+	private String estimatedCostOfProject;
+	
+	public String getEstimatedCostOfProject() {
+		return estimatedCostOfProject;
+	}
+
+	public void setEstimatedCostOfProject(String estimatedCostOfProject) {
+		this.estimatedCostOfProject = estimatedCostOfProject;
+	}
 
 	@Column(name = "Q_10_2", length = 5)
 	private String question_10_2;
@@ -129,36 +140,54 @@ public class FormFiveModel implements Serializable {
 	@Column(name = "Q_10_3", length = 5)
 	private String question_10_3;
 
-	@Column(name = "CA_FORM_NO")
-	private String caFormNo;
+	@Column(name = "CA_FRM_NO")
+	private String caFrmNo;
 
-	@Column(name = "CA_FORM_NAME")
-	private String caFormName;
+	@Column(name = "CA_FRM_NAME")
+	private String caFrmName;
 
 	@Column(name = "CA_UDIN")
-	private String caUdiNumber;
+	private String caUdinNumber;
+	
+	@Column(name = "CA_DESIGNATION")
+	private String caDesignation;
+
+	public String getCaDesignation() {
+		return caDesignation;
+	}
+
+	public void setCaDesignation(String caDesignation) {
+		this.caDesignation = caDesignation;
+	}
+
+	
+	public int rafCount;
+	
+	public void setRafCount(int rafCount) {
+		this.rafCount = rafCount;
+	}
 
 	public int getRafCount() {
 		int count = 0;
-		if (getQuestion_1() != null && getQuestion_1().equals("NO"))
+		if (getQuestion_1() != null && getQuestion_1().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_1_1() != null && getQuestion_1_1().equals("NO"))
+		if (getQuestion_1_1() != null && getQuestion_1_1().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_3() != null && getQuestion_3().equals("NO"))
+		if (getQuestion_3() != null && getQuestion_3().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_5() != null && getQuestion_5().equals("NO"))
+		if (getQuestion_5() != null && getQuestion_5().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_6_1() != null && getQuestion_6_1().equals("YES"))
+		if (getQuestion_6_1() != null && getQuestion_6_1().equalsIgnoreCase("YES"))
 			count++;
-		if (getQuestion_7() != null && getQuestion_7().equals("NO"))
+		if (getQuestion_7() != null && getQuestion_7().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_8_1() != null && getQuestion_8_1().equals("NO"))
+		if (getQuestion_8_1() != null && getQuestion_8_1().equalsIgnoreCase("NO"))
 			count++;
-		if (getQuestion_9() != null && getQuestion_9().equals("YES"))
+		if (getQuestion_9() != null && getQuestion_9().equalsIgnoreCase("YES"))
 			count++;
-		if (getQuestion_10_3() != null && getQuestion_10_3().equals("YES"))
+		if (getQuestion_10_3() != null && getQuestion_10_3().equalsIgnoreCase("YES"))
 			count++;
-		if (getQuestion_11() != null && getQuestion_11().equals("YES"))
+		if (getQuestion_11() != null && getQuestion_11().equalsIgnoreCase("YES"))
 			count++;
 		return count;
 	}
@@ -210,22 +239,6 @@ public class FormFiveModel implements Serializable {
 	@Column(name = "TOT_LOAN_EST_COST")
 	private String totLoanEstCost;
 
-	public String getCaFormNo() {
-		return caFormNo;
-	}
-
-	public void setCaFormNo(String caFormNo) {
-		this.caFormNo = caFormNo;
-	}
-
-	public String getCaFormName() {
-		return caFormName;
-	}
-
-	public void setCaFormName(String caFormName) {
-		this.caFormName = caFormName;
-	}
-
 	public String getCaFormCapacity() {
 		return caFormCapacity;
 	}
@@ -235,16 +248,18 @@ public class FormFiveModel implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<FormFiveQ10_1Model> projectFormFiveQ10_1Model;
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveQ10_1Model> projectFormFiveQ10_1List;
 
 	@Column(name = "Q_11", length = 5)
 	private String question_11;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<FormFiveQ11_1Model> projectFormFiveQ11_1;
+	@JoinColumn(name="FORM_FIVE_FK")
+	private List<FormFiveQ11_1Model> projectFormFiveQ11_1List;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "PRO_FORM_FIVEQ6_2_ID")
+	@JoinColumn(name = "FORM_FIVE_PK")
 	private FormFiveQ6_2Model formFiveQ6_2Model;
 
 	@Column(name = "Q_12", length = 5000)
@@ -259,14 +274,47 @@ public class FormFiveModel implements Serializable {
 	@Column(name = "CA_NUMBER") 
 	private String caNumber;
 
+	@Column(name = "CA_NANME") 
+	private String caName;
+	
+	@Column(name = "CA_MOBILE_NO") 
+	private String caMobileNo;
+	
+	@Column(name = "CA_EMAIL_ID") 
+	private String caEmailId;
+	
+	public String getCaName() {
+		return caName;
+	}
+
+	public void setCaName(String caName) {
+		this.caName = caName;
+	}
+
+	public String getCaMobileNo() {
+		return caMobileNo;
+	}
+
+	public void setCaMobileNo(String caMobileNo) {
+		this.caMobileNo = caMobileNo;
+	}
+
+	public String getCaEmailId() {
+		return caEmailId;
+	}
+
+	public void setCaEmailId(String caEmailId) {
+		this.caEmailId = caEmailId;
+	}
+
 	@Column(name = "PROMOTER_REMARKS", length = 500)
 	private String promoterRemarks;
 
 	@Column(name = "CREATED_ON")
 	private Calendar createdOn;
 
-	@Column(name = "SIGNED_ON")
-	private Calendar signedOn;
+	@Column(name = "ESIGNED_ON")
+	private Calendar eSignedOn;
 
 	@Column(name = "CAPTION1", length = 500)
 	private String caption1;
@@ -276,10 +324,47 @@ public class FormFiveModel implements Serializable {
 
 	@Column(name = "CAPTION3", length = 500)
 	private String caption3;
+	  
+	@Column(name = "CUMULATIVE_WITHDRAWL_LIMIT", length = 500)
+	private String cumulativeWithdrawalLimit;
+	
+	@Column(name = "CUMULATIVE_WITHDRAWL_FROM", length = 500)
+	private String cumulativeWithdrawalFrom;
+	
+	public String getCumulativeWithdrawalLimit() {
+		return cumulativeWithdrawalLimit;
+	}
 
+	public void setCumulativeWithdrawalLimit(String cumulativeWithdrawalLimit) {
+		this.cumulativeWithdrawalLimit = cumulativeWithdrawalLimit;
+	}
+
+	public String getCumulativeWithdrawalFrom() {
+		return cumulativeWithdrawalFrom;
+	}
+
+	public void setCumulativeWithdrawalFrom(String cumulativeWithdrawalFrom) {
+		this.cumulativeWithdrawalFrom = cumulativeWithdrawalFrom;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="FORM_FIVE_FK")
+	FormFiveDocumentModel formFiveDocModel;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="FORM_FIVE_FK")
+	List<FormFiveOtherDocModel> formFiveOtherDocList;
+	
+	@Column(name="PROJECT_NAME")
+	private String projectName;
+	
+	@Column(name="PROMOTER_NAME")
+	private String promoterName;
+	
+	@Column(name="PROJECT_ID")
+	private Long projectId;
+	
 	/*
-	 * @OneToOne
-	 * 
 	 * @JoinColumn(name = "PROJECT_FORM_FIVE_DOC_ID_1") private Document
 	 * prjFormFiveDocId1;
 	 * 
@@ -300,12 +385,52 @@ public class FormFiveModel implements Serializable {
 	 * 
 	 * @Column(name = "OTHER_DOC_CAPTION", length = 500) private String
 	 * otherDocCaption;
-	 * 	 */
-	/*
-	 * @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private
-	 * List<Document> otherDocumentList;
+	 
+	  	 
+	 
+	  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private
+	  List<Document> otherDocumentList;
 	 */
 
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public String getPromoterName() {
+		return promoterName;
+	}
+
+	public void setPromoterName(String promoterName) {
+		this.promoterName = promoterName;
+	}
+
+	public Long getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+
+	public FormFiveDocumentModel getFormFiveDocModel() {
+		return formFiveDocModel;
+	}
+
+	public void setFormFiveDocModel(FormFiveDocumentModel formFiveDocModel) {
+		this.formFiveDocModel = formFiveDocModel;
+	}
+
+	public List<FormFiveOtherDocModel> getFormFiveOtherDocList() {
+		return formFiveOtherDocList;
+	}
+
+	public void setFormFiveOtherDocList(List<FormFiveOtherDocModel> formFiveOtherDocList) {
+		this.formFiveOtherDocList = formFiveOtherDocList;
+	}
 
 	public Calendar getCreatedOn() {
 		return createdOn;
@@ -315,20 +440,21 @@ public class FormFiveModel implements Serializable {
 		this.createdOn = createdOn;
 	}
 
-	public Calendar getSignedOn() {
-		return signedOn;
-	}
 
-	public String getSignedOnStr() {
-		if (signedOn != null) {
+	public String geteSignedOnStr() {
+		if (eSignedOn != null) {
 			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-			return sf.format(signedOn.getTime());
+			return sf.format(eSignedOn.getTime());
 		}
 		return null;
 	}
 
-	public void setSignedOn(Calendar signedOn) {
-		this.signedOn = signedOn;
+	public Calendar geteSignedOn() {
+		return eSignedOn;
+	}
+
+	public void seteSignedOn(Calendar eSignedOn) {
+		this.eSignedOn = eSignedOn;
 	}
 
 	public String getFinYearId() {
@@ -337,41 +463,6 @@ public class FormFiveModel implements Serializable {
 
 	public void setFinYearId(String finYearId) {
 		this.finYearId = finYearId;
-	}
-
-
-
-
-	public Date getCertFromDate() {
-		return certFromDate;
-	}
-
-	public String getCertFromDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-		if (null != certFromDate)
-			return sf.format(certFromDate);
-
-		return null;
-	}
-
-	public void setCertFromDate(Date certFromDate) {
-		this.certFromDate = certFromDate;
-	}
-
-	public Date getCertToDate() {
-		return certToDate;
-	}
-
-	public String getCertToDateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-		if (null != certToDate)
-			return sf.format(certToDate);
-
-		return null;
-	}
-
-	public void setCertToDate(Date certToDate) {
-		this.certToDate = certToDate;
 	}
 
 	public String getQuestion_1() {
@@ -393,6 +484,22 @@ public class FormFiveModel implements Serializable {
 
 	public String getQuestion_3() {
 		return question_3;
+	}
+
+	public String getCertFromDate() {
+		return certFromDate;
+	}
+
+	public void setCertFromDate(String certFromDate) {
+		this.certFromDate = certFromDate;
+	}
+
+	public String getCertToDate() {
+		return certToDate;
+	}
+
+	public void setCertToDate(String certToDate) {
+		this.certToDate = certToDate;
 	}
 
 	public void setQuestion_3(String question_3) {
@@ -491,7 +598,6 @@ public class FormFiveModel implements Serializable {
 		this.formFiveId = formFiveId;
 	}
 
-
 	public Long getProjectFormFiveFk() {
 		return projectFormFiveFk;
 	}
@@ -508,62 +614,61 @@ public class FormFiveModel implements Serializable {
 		this.formFiveQ6_2Model = formFiveQ6_2Model;
 	}
 
-	public List<FormFiveModel> getFormFiveBankld() {
-		return FormFiveBankld;
+	public List<FormFiveBankDetailsModel> getFormFiveBankList() {
+		return formFiveBankList;
 	}
 
-	public void setFormFiveBankld(List<FormFiveModel> formFiveBankld) {
-		FormFiveBankld = formFiveBankld;
+	public void setFormFiveBankList(List<FormFiveBankDetailsModel> formFiveBankList) {
+		this.formFiveBankList = formFiveBankList;
 	}
 
-	public List<FormFiveQ4_1Model> getFormFiveQ4_1Model() {
-		return formFiveQ4_1Model;
+	public List<FormFiveQ4_1Model> getFormFiveQ4_1List() {
+		return formFiveQ4_1List;
 	}
 
-	public void setFormFiveQ4_1Model(List<FormFiveQ4_1Model> formFiveQ4_1Model) {
-		this.formFiveQ4_1Model = formFiveQ4_1Model;
+	public void setFormFiveQ4_1List(List<FormFiveQ4_1Model> formFiveQ4_1List) {
+		this.formFiveQ4_1List = formFiveQ4_1List;
 	}
 
-	public List<FormFiveQ5_1Model> getFormFiveQ5_1Model() {
-		return formFiveQ5_1Model;
+	public List<FormFiveQ5_1Model> getFormFiveQ5_1List() {
+		return formFiveQ5_1List;
 	}
 
-	public void setFormFiveQ5_1Model(List<FormFiveQ5_1Model> formFiveQ5_1Model) {
-		this.formFiveQ5_1Model = formFiveQ5_1Model;
+	public void setFormFiveQ5_1List(List<FormFiveQ5_1Model> formFiveQ5_1List) {
+		this.formFiveQ5_1List = formFiveQ5_1List;
 	}
 
-	public List<FormFiveQ7_1Model> getProjectFormFiveQ7_1Model() {
-		return projectFormFiveQ7_1Model;
+	public List<FormFiveQ7_1Model> getProjectFormFiveQ7_1List() {
+		return projectFormFiveQ7_1List;
 	}
 
-	public void setProjectFormFiveQ7_1Model(List<FormFiveQ7_1Model> projectFormFiveQ7_1Model) {
-		this.projectFormFiveQ7_1Model = projectFormFiveQ7_1Model;
+	public void setProjectFormFiveQ7_1List(List<FormFiveQ7_1Model> projectFormFiveQ7_1List) {
+		this.projectFormFiveQ7_1List = projectFormFiveQ7_1List;
 	}
 
-	public List<FormFiveQ9_1Model> getProjectFormFiveQ9_1Model() {
-		return projectFormFiveQ9_1Model;
+	public List<FormFiveQ9_1Model> getProjectFormFiveQ9_1List() {
+		return projectFormFiveQ9_1List;
 	}
 
-	public void setProjectFormFiveQ9_1Model(List<FormFiveQ9_1Model> projectFormFiveQ9_1Model) {
-		this.projectFormFiveQ9_1Model = projectFormFiveQ9_1Model;
+	public void setProjectFormFiveQ9_1List(List<FormFiveQ9_1Model> projectFormFiveQ9_1List) {
+		this.projectFormFiveQ9_1List = projectFormFiveQ9_1List;
 	}
 
-	public List<FormFiveQ10_1Model> getProjectFormFiveQ10_1Model() {
-		return projectFormFiveQ10_1Model;
+	public List<FormFiveQ10_1Model> getProjectFormFiveQ10_1List() {
+		return projectFormFiveQ10_1List;
 	}
 
-	public void setProjectFormFiveQ10_1Model(List<FormFiveQ10_1Model> projectFormFiveQ10_1Model) {
-		this.projectFormFiveQ10_1Model = projectFormFiveQ10_1Model;
+	public void setProjectFormFiveQ10_1List(List<FormFiveQ10_1Model> projectFormFiveQ10_1List) {
+		this.projectFormFiveQ10_1List = projectFormFiveQ10_1List;
 	}
 
-	public List<FormFiveQ11_1Model> getProjectFormFiveQ11_1() {
-		return projectFormFiveQ11_1;
+	public List<FormFiveQ11_1Model> getProjectFormFiveQ11_1List() {
+		return projectFormFiveQ11_1List;
 	}
 
-	public void setProjectFormFiveQ11_1(List<FormFiveQ11_1Model> projectFormFiveQ11_1) {
-		this.projectFormFiveQ11_1 = projectFormFiveQ11_1;
+	public void setProjectFormFiveQ11_1List(List<FormFiveQ11_1Model> projectFormFiveQ11_1List) {
+		this.projectFormFiveQ11_1List = projectFormFiveQ11_1List;
 	}
-
 
 	public String getCaNumber() {
 		return caNumber;
@@ -613,8 +718,6 @@ public class FormFiveModel implements Serializable {
 		this.status = status;
 	}
 
-
-
 	public String getPromoterRemarks() {
 		return promoterRemarks;
 	}
@@ -622,10 +725,6 @@ public class FormFiveModel implements Serializable {
 	public void setPromoterRemarks(String promoterRemarks) {
 		this.promoterRemarks = promoterRemarks;
 	}
-
-
-
-
 
 	public String getCaption1() {
 		return caption1;
@@ -652,12 +751,33 @@ public class FormFiveModel implements Serializable {
 	}
 
 
+	public String getCaFrmNo() {
+		return caFrmNo;
+	}
 
+	public void setCaFrmNo(String caFrmNo) {
+		this.caFrmNo = caFrmNo;
+	}
+
+	public String getCaFrmName() {
+		return caFrmName;
+	}
+
+	public void setCaFrmName(String caFrmName) {
+		this.caFrmName = caFrmName;
+	}
+
+	public String getCaUdinNumber() {
+		return caUdinNumber;
+	}
+
+	public void setCaUdinNumber(String caUdinNumber) {
+		this.caUdinNumber = caUdinNumber;
+	}
 
 	public int getRAFlag() {
-		int raf = 0;
 
-		return raf;
+		return getRafCount();
 	}
 
 	@Column(name = "LAST_UPDATED_ON")
@@ -682,12 +802,5 @@ public class FormFiveModel implements Serializable {
 		this.acceptedOn = acceptedOn;
 	}
 
-	public String getCaUdiNumber() {
-		return caUdiNumber;
-	}
-
-	public void setCaUdiNumber(String caUdiNumber) {
-		this.caUdiNumber = caUdiNumber;
-	}
 
 }

@@ -2,11 +2,13 @@ package in.gov.rera.form.five.common.services;
 
 import java.util.List;
 import in.gov.rera.form.five.common.model.DmsModel;
+import in.gov.rera.form.five.model.FormFiveDocumentModel;
+import in.gov.rera.form.five.model.FormFiveOtherDocModel;
 
 
 
 public interface DmsServices {
 
-	public DmsModel commitDoc(DmsModel model,String url);
-	public List<DmsModel> commitDoc(List<DmsModel> model,String url);
+	public FormFiveOtherDocModel commitOthDoc(FormFiveOtherDocModel model,String url);
+	public FormFiveDocumentModel commitDoc(FormFiveDocumentModel model,String url);
 }

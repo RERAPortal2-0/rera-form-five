@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import in.gov.rera.form.five.model.FormFiveModel;
+
 
 public class SmsNotification {
 
@@ -137,6 +139,10 @@ public class SmsNotification {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+
+
+
 
 	
 	

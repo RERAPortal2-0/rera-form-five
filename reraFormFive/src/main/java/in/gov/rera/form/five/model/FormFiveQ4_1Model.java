@@ -2,21 +2,12 @@ package in.gov.rera.form.five.model;
 
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity(name = "FormFiveQ4_1Model")
 @Table(name = "TL_FORM_FIVEQ4_1")
@@ -35,9 +26,7 @@ public class FormFiveQ4_1Model{
 	private String caNumber;
 	
 	@Column(name = "DATE_OF_CERTIFICATE")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date  dateCertificate;
+	private String  dateCertificate;
 	
 	/*
 	 * @ManyToOne
@@ -46,9 +35,24 @@ public class FormFiveQ4_1Model{
 	 * userQuarterModel;
 	 */
 	
-	@ManyToOne
-	@JoinColumn(name="PROJECT_FORM_FIVE_ID")
-	private FormFiveModel formFiveModel;
+	public String getDateCertificate() {
+		return dateCertificate;
+	}
+
+	public void setDateCertificate(String dateCertificate) {
+		this.dateCertificate = dateCertificate;
+	}
+
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
+	@Column(name="FORM_FIVE_FK")
+	private Long formFiveId;
 
 	public Long getProjectFormFiveQ41Id() {
 		return projectFormFiveQ41Id;
@@ -74,24 +78,13 @@ public class FormFiveQ4_1Model{
 		this.caNumber = caNumber;
 	}
 
-	public Date getDateCertificate() {
-		return dateCertificate;
-	}
-	
-	
-	public String getDateCertificateStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");		
-		if(	null!=dateCertificate)
-			return sf.format(dateCertificate);
-			
-			return null;
-	}
+
 	
 	
 
-	public void setDateCertificate(Date dateCertificate) {
-		this.dateCertificate = dateCertificate;
-	}
+	
+
+
 
 
 

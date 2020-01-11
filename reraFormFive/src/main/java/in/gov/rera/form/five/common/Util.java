@@ -1,9 +1,12 @@
 package in.gov.rera.form.five.common;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import in.gov.rera.form.five.exception.ResourceNotFoundException;
 
 public class Util {
 
@@ -15,6 +18,49 @@ public class Util {
         this.calendarDate = calendarDate;
     }
 
+	public static String checkNullSpace(String val, String msg) throws ResourceNotFoundException {
+		if ("" != val.trim() && val != null ) {
+			return val;
+		} else {
+			throw new ResourceNotFoundException( msg + " value is Required");
+		}
+	}
+    
+	public static String getDateString(Calendar cal){
+		if(cal!=null){
+//		SimpleDateFormat dat=new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat dat=new SimpleDateFormat("dd/MM/yyyy");
+		return dat.format(cal.getTime());
+		}
+		
+		return " Date Not exist ";
+	}
+	
+	public static String getCanvertDateFormat(String strDate) throws ResourceNotFoundException {
+		 //String strDate="28-May-2019";
+		  String newDate="";
+	      SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+	      try {
+	          Date varDate=dateFormat.parse(strDate);
+	          dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+	          newDate= dateFormat.format(varDate);
+	      }catch (Exception e) {
+	          // TODO: handle exception
+	    	  throw new  ResourceNotFoundException("Please enter Right format in Date,Please Use the format:'DD-MMM-YYYY'");
+	      }
+		return newDate;
+	    
+	}
+    
+	public static String isNumeric(String str)throws ResourceNotFoundException { 
+		  try {  
+		    Double.parseDouble(str);  
+		    return str;
+		  } catch(Exception e){  
+			  throw new  ResourceNotFoundException("Please enter Right format of number values");
+		  }  
+		}
+    
     public Util(Date date) {
         this.calendarDate = Calendar.getInstance();
         this.calendarDate.setTime(date);
@@ -44,11 +90,12 @@ public class Util {
     }
 
 	
-	  public static void main(String[] args) {
-	  //displayFinancialDate(Calendar.getInstance());
-	  //displayFinancialDate(setDate(2013, 1, 1));
-	  //displayFinancialDate(setDate(2012, 6, 25));
-		  }
+	/*
+	 * public static void main(String[] args) {
+	 * //displayFinancialDate(Calendar.getInstance());
+	 * //displayFinancialDate(setDate(2013, 1, 1));
+	 * //displayFinancialDate(setDate(2012, 6, 25)); }
+	 */
 	 
 
     
@@ -57,6 +104,8 @@ public class Util {
         long start = startDate.YEAR;
         return (end - start);
     }
+    
+    
     
     
     
@@ -72,21 +121,31 @@ public class Util {
         return calendar;
     }
 
-	private static List<ArrayList<?>> getFinancialYear(Calendar startDate, Calendar endDate)
+	public static List<String> getFinancialYear(Calendar startDate, Calendar endDate, Date formFiveStartDate)
 	{
+		List<String> list = new ArrayList<String>();
+		Calendar cal = Calendar.getInstance();
+    	cal.setTime(formFiveStartDate);
+    	int startYear = cal.get(Calendar.YEAR);
+    	int startMonth = cal.get(Calendar.MONTH);
+    	int startDay = cal.get(Calendar.DAY_OF_MONTH);
+    	int yearStart = startDate.get(startDate.YEAR);
+    	if(startMonth<3)
+    	{
+    		--yearStart;
+    	}
 		
-		List<ArrayList<?>> list = new ArrayList<ArrayList<?>>();
-		int yearStart = startDate.YEAR;
-		int yearEnd = endDate.YEAR;
+		int dayEnd = endDate.get(endDate.DAY_OF_MONTH);
+		int monthEnd = endDate.get(endDate.MONTH);
+		int yearEnd = endDate.get(endDate.YEAR);
+		if(monthEnd<=10 && dayEnd<=30) {
+			yearEnd=yearEnd-2;;
+		}
 		for(int i=yearStart;i<=yearEnd;i++)
 		{
-			
+			String fYear=i + "-" + (i + 1);
+			list.add(fYear);
 		}
-
-		Util fiscalDate = new Util(startDate); 
-		  int year = fiscalDate.getFiscalYear();
-          
-		
 		return list;
 		
 	}

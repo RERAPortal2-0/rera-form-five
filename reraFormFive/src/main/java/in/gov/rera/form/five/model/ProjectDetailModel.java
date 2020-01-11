@@ -20,6 +20,22 @@ public class ProjectDetailModel {
 	@Column(name = "PRD_COMPLETION_DATE")
 	private Date completionDate;
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getCompletionDate() {
+		return completionDate;
+	}
+
+	public void setCompletionDate(Date completionDate) {
+		this.completionDate = completionDate;
+	}
+
 	@Column(name = "PRD_STATUS")
 	private String projectStatus;
 
@@ -215,22 +231,6 @@ public class ProjectDetailModel {
 
 	@Column(name = "PRD_LAST_UPDATED_ON")
 	private Calendar updatedOn;
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getCompletionDate() {
-		return completionDate;
-	}
-
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
-	}
 
 	public Long getId() {
 		return id;

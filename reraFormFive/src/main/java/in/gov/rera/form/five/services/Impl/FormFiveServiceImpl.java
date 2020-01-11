@@ -1,5 +1,7 @@
 package in.gov.rera.form.five.services.Impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,33 @@ public class FormFiveServiceImpl implements FormFiveService {
 	FormFiveDao formFiveDao;
 
 	@Override
-	public FormFiveModel FindByformFiveId(Long id) {
+	public FormFiveModel findById(Long id) {
 		// TODO Auto-generated method stub
 		return formFiveDao.findById(id).get();
+	}
+
+	@Override
+	public FormFiveModel updateFormFive(FormFiveModel formFiveModel) {
+		// TODO Auto-generated method stub
+		return formFiveDao.save(formFiveModel);
+	}
+
+	@Override
+	public List<FormFiveModel> findByCaNumber(String caNumber) {
+		// TODO Auto-generated method stub
+		return formFiveDao.findByCaNumber(caNumber);
+	}
+
+	@Override
+	public FormFiveModel saveFormFive(FormFiveModel formFiveModel) {
+		// TODO Auto-generated method stub
+		return formFiveDao.save(formFiveModel);
+	}
+
+	@Override
+	public List<FormFiveModel> findFormFiveListbyStatus(String status) {
+		// TODO Auto-generated method stub
+		return formFiveDao.findByStatus(status);
 	}
 	
 	

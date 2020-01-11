@@ -22,15 +22,19 @@ public class FormFiveQ9_1Model {
 	@Column(name = "UNIT_NUMBER")
 	private String unitNumber;
 	
-	@Column(name = "TOTAL_CONSIDERATION", columnDefinition = "Double default '0'")
-	private Long totalConsideration;
+	@Column(name = "TOTAL_CONSIDERATION")
+	private String totalConsideration;
 	
-	@Column(name = "AMT_RECEIVED_IN_EXCESS", columnDefinition = "Double default '0'")
-	private Long amtReceivedInExcess;
+	@Column(name = "AMT_RECEIVED_IN_EXCESS")
+	private String amtReceivedInExcess;
 	
-	@ManyToOne
-	@JoinColumn(name="PROJECT_FORM_FIVE_ID")
-	private FormFiveModel formFiveModel;
+	public Long getFormFiveQ91Id() {
+		return formFiveQ91Id;
+	}
+
+	public void setFormFiveQ91Id(Long formFiveQ91Id) {
+		this.formFiveQ91Id = formFiveQ91Id;
+	}
 
 	public String getUnitNumber() {
 		return unitNumber;
@@ -40,21 +44,34 @@ public class FormFiveQ9_1Model {
 		this.unitNumber = unitNumber;
 	}
 
-	public Long getTotalConsideration() {
+	public String getTotalConsideration() {
 		return totalConsideration;
 	}
 
-	public void setTotalConsideration(Long totalConsideration) {
+	public void setTotalConsideration(String totalConsideration) {
 		this.totalConsideration = totalConsideration;
 	}
 
-	public Long getAmtReceivedInExcess() {
+	public String getAmtReceivedInExcess() {
 		return amtReceivedInExcess;
 	}
 
-	public void setAmtReceivedInExcess(Long amtReceivedInExcess) {
+	public void setAmtReceivedInExcess(String amtReceivedInExcess) {
 		this.amtReceivedInExcess = amtReceivedInExcess;
 	}
 
+
+	@Column(name="FORM_FIVE_FK")
+	private Long formFiveId;
+
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
+	
 
 }

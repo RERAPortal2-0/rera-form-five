@@ -13,7 +13,7 @@ public class ReraFormFiveApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReraFormFiveApplication.class, args);
-		System.out.println("Form Five Started");
+		System.out.println("Form Five server Started");
 	}	
 	
 	@Bean

@@ -1,20 +1,11 @@
 package in.gov.rera.form.five.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity(name = "FormFiveQ11_1Model")
@@ -33,13 +24,30 @@ public class FormFiveQ11_1Model {
 	@Column(name = "FORM_TITLE")
 	private String formTitle;
 	
+	@Column(name="FORM_FIVE_FK")
+	private Long formFiveId;
+	
+	public String getDateOfIssuanceForm() {
+		return dateOfIssuanceForm;
+	}
+
+	public void setDateOfIssuanceForm(String dateOfIssuanceForm) {
+		this.dateOfIssuanceForm = dateOfIssuanceForm;
+	}
+
+	public Long getFormFiveId() {
+		return formFiveId;
+	}
+
+	public void setFormFiveId(Long formFiveId) {
+		this.formFiveId = formFiveId;
+	}
+
 	@Column(name = "CERTIFY_PROFESSIONAL_FORM1")
 	private String certifyProfessionalForm;
 	
 	@Column(name = "DATE_OF_ISSUANCE_FORM")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Date dateOfIssuanceForm;
+	private String dateOfIssuanceForm;
 
 	@Column(name = "DETLS_OF_DESCREAPNCE_FORM1")
 	private String detlsOfDescrepanceForm;
@@ -50,15 +58,6 @@ public class FormFiveQ11_1Model {
 
 	public void setProjectFormFiveQ111Id(Long projectFormFiveQ111Id) {
 		this.projectFormFiveQ111Id = projectFormFiveQ111Id;
-	}
-
-	
-	public String getDateOfIssuanceFormStr() {
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");		
-		if(	null!=dateOfIssuanceForm)
-			return sf.format(dateOfIssuanceForm);
-			
-			return null;
 	}
 
 	public String getForm1ApplicableId() {
@@ -83,14 +82,6 @@ public class FormFiveQ11_1Model {
 
 	public void setCertifyProfessionalForm(String certifyProfessionalForm) {
 		this.certifyProfessionalForm = certifyProfessionalForm;
-	}
-
-	public Date getDateOfIssuanceForm() {
-		return dateOfIssuanceForm;
-	}
-
-	public void setDateOfIssuanceForm(Date dateOfIssuanceForm) {
-		this.dateOfIssuanceForm = dateOfIssuanceForm;
 	}
 
 	public String getDetlsOfDescrepanceForm() {
