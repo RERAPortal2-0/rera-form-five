@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>in.gov.rera.form.five</groupId>
-	<artifactId>reraFormFive</artifactId>
+	<artifactId>project-formfive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<name>reraFormFive</name>
+	<packaging>jar</packaging>
+	<name>rera-formfive</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

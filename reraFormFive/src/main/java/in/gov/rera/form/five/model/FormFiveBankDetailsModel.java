@@ -56,7 +56,7 @@ public class FormFiveBankDetailsModel {
 	@Column(name = "CLOSING_BAL" ,nullable=false, length=512)
 	private String formFiveClosingBal;
 
-	@Column(name = "CLOSING_BAL_DATE" ,nullable=false)
+	@Column(name = "CLOSING_BAL_DATE")
 	private Date formFiveClosingBalanceDate;
 
 	@Column(name = "STATE_CODE")

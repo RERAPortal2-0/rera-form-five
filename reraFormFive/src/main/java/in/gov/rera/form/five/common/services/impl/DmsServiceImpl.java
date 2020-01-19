@@ -16,7 +16,7 @@ public class DmsServiceImpl implements DmsServices {
 
 		DmsModel dmsModel = new DmsModel();
 		try {
-			if (model.getDocUId() == null && model.getDocId() != null) {
+			if (model.getDocId() != null) {
 				dmsModel.setFolderId(model.getFormFiveId().toString());
 				dmsModel.setDocumentId(model.getDocId());
 				dmsModel.setDocumentType("FORM-FIVE-OTHER-DOC");
