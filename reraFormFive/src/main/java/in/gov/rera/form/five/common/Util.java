@@ -36,8 +36,7 @@ public class Util {
 		return " Date Not exist ";
 	}
 	
-	public static String getCanvertDateFormat(String strDate) throws ResourceNotFoundException {
-		 //String strDate="28-May-2019";
+	public static String getCanvertDateFormat(String strDate,String msg) throws ResourceNotFoundException {
 		  String newDate="";
 	      SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
 	      try {
@@ -45,20 +44,55 @@ public class Util {
 	          dateFormat=new SimpleDateFormat("yyyy-MM-dd");
 	          newDate= dateFormat.format(varDate);
 	      }catch (Exception e) {
-	          // TODO: handle exception
-	    	  throw new  ResourceNotFoundException("Please enter Right format in Date,Please Use the format:'DD-MMM-YYYY'");
+	    	  throw new  ResourceNotFoundException("Please enter right format in Date,Please Use the format:'DD-MMM-YYYY' in "+msg);
 	      }
 		return newDate;
 	    
 	}
     
-	public static String isNumeric(String str)throws ResourceNotFoundException { 
+	public static String isAlpha(String s) throws ResourceNotFoundException {
+		boolean check= s != null && s.matches("^[a-zA-Z]*$");
+		if(check)
+		{
+			return s;
+		}
+		else
+		{
+			 throw new  ResourceNotFoundException("Alphanumeric are allowed");
+		}
+	}
+
+	public static String isCharacter(String s, String msg) throws ResourceNotFoundException {
+		boolean check= s != null && s.matches("^[a-zA-Z]*$");
+		if(check)
+		{
+			return s;
+		}
+		else
+		{
+			throw new  ResourceNotFoundException("Only Characters are allowed in "+msg);
+		}
+	}
+	
+	public static String isNumeric(String str, String msg)throws ResourceNotFoundException { 
 		  try {  
 		    Double.parseDouble(str);  
+		    str=str.substring(0, str.length() - 2);
 		    return str;
 		  } catch(Exception e){  
-			  throw new  ResourceNotFoundException("Please enter Right format of number values");
+			  throw new  ResourceNotFoundException("Please enter only numbers in "+ msg);
 		  }  
+		}
+	
+	public static String isCALength(String str, String msg)throws ResourceNotFoundException { 
+		str=str.substring(0, str.length() - 2);
+		    if(str.length()!=6)
+		    	{
+		    	throw new  ResourceNotFoundException("CA Number length should be 6 digit in "+ msg);
+		    	}
+		    else {
+		    	return str;
+		    }
 		}
     
     public Util(Date date) {

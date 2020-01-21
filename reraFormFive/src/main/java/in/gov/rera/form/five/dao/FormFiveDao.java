@@ -13,4 +13,8 @@ public interface FormFiveDao extends CrudRepository<FormFiveModel, Long> {
 	List<FormFiveModel> findByCaNumber(String caNumber);
 
 	List<FormFiveModel> findByStatus(String status);
+	
+	List<FormFiveModel> findByFinancialYear(String financialYear);
+	
+	
 }

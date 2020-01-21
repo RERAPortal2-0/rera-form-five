@@ -40,9 +40,9 @@ public class Q10_1ServiceImpl implements Q10_1Service {
 		for (int i=1;i<depositDtlExl.getPhysicalNumberOfRows();i++) {
 			FormFiveQ10_1Model model= new FormFiveQ10_1Model();
 			model.setLanderNameType(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));
-			model.setSanctionLoanAmt(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2")));
-			model.setSanctionDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3")));
-			model.setOutStandingLoan(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(3).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 4")));
+			model.setSanctionLoanAmt(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"));
+			model.setSanctionDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"));
+			model.setOutStandingLoan(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(3).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 4"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 4"));
 			model.setCollateralMortgateDls(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(4).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 5"));
 			model.setFormFiveId(formFiveId);
 			loanDtlList.add(model);

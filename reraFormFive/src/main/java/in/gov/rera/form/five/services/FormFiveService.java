@@ -15,4 +15,6 @@ public interface FormFiveService {
 	FormFiveModel saveFormFive(FormFiveModel formFiveModel);
 
 	List<FormFiveModel> findFormFiveListbyStatus(String status);
+
+	List<FormFiveModel> findFormFiveListbyFinancialYear(String financialYear);
 }

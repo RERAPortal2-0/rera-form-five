@@ -39,9 +39,9 @@ public class Q7_1ServiceImpl implements Q7_1Service {
 	List<FormFiveQ7_1Model> depositDtlList =new ArrayList<FormFiveQ7_1Model>();
 		for (int i=1;i<depositDtlExl.getPhysicalNumberOfRows();i++) {
 			FormFiveQ7_1Model model= new FormFiveQ7_1Model();
-			model.setPeriodFromDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1")));
-			model.setPeriodToDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2")));
-			model.setExcessWithdrawalAmt(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3")));
+			model.setPeriodFromDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));
+			model.setPeriodToDate(Util.getCanvertDateFormat(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"));
+			model.setExcessWithdrawalAmt(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"));
 			model.setFormFiveId(formFiveId);
 			depositDtlList.add(model);
 		row++;
@@ -57,8 +57,4 @@ public class Q7_1ServiceImpl implements Q7_1Service {
 	public void removeAll(Long formFiveId) {
 		q7_1Dao.deleteByFormFiveId(formFiveId);
 	}
-
-	
-	
-
 }

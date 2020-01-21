@@ -35,7 +35,6 @@ public class Q4_1ServiceImpl implements Q4_1Service {
 	public List<FormFiveQ4_1Model> findByFormFiveId(Long id) {
 		return q4_1Dao.findByFormFiveId(id);
 	}
-
 	@Override
 	public List<FormFiveQ4_1Model> validateCaDtlExl(XSSFSheet caDtlExl,FormFiveModel pModel) throws ResourceNotFoundException, ParseException {
 	    System.out.print("cert form date is "+pModel.getCertFromDate());
@@ -44,10 +43,9 @@ public class Q4_1ServiceImpl implements Q4_1Service {
 	List<FormFiveQ4_1Model> caDtlList =new ArrayList<FormFiveQ4_1Model>();
 		for (int i=1;i<caDtlExl.getPhysicalNumberOfRows();i++) {
 		FormFiveQ4_1Model caModel= new FormFiveQ4_1Model();
-		caModel.setCaName(Util.checkNullSpace(caDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));
-		caModel.setCaNumber(Util.checkNullSpace(caDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"));
+		caModel.setCaName(Util.isCharacter(Util.checkNullSpace(caDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));
+		caModel.setCaNumber(Util.isCALength(Util.isNumeric(Util.checkNullSpace(caDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"));
 		caModel.setDateCertificate(Util.checkNullSpace(caDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"));
-		
 		System.out.println("ca date certificate is   :::::::::  "+caDtlExl.getRow(i).getCell(2).toString());
 		caModel.setFormFiveId(pModel.getFormFiveId());
 		caDtlList.add(caModel);

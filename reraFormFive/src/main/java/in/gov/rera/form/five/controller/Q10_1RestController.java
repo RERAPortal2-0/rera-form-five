@@ -53,6 +53,10 @@ public class Q10_1RestController {
 		XSSFWorkbook depositExl = new XSSFWorkbook(uploadedExcelFile.getInputStream());
 		List<FormFiveQ10_1Model> depositedList= new ArrayList<FormFiveQ10_1Model>();
 		XSSFSheet deopsitedSheet = depositExl.getSheetAt(0);
+		if(!deopsitedSheet.getSheetName().equalsIgnoreCase("10.1_SHEET"))
+		{
+			throw new ResourceNotFoundException(env.getProperty("INVALID_EXCEL_MSG"));
+		}
 		depositedList = q10Service.validateLoanDtlExl(deopsitedSheet,formFiveId);
 		Optional.ofNullable(uploadedExcelFile)
 						.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));

@@ -49,9 +49,9 @@ public class FormFiveRestController {
 	@Autowired
 	Environment env;
 	
-	/*
-	 * @Autowired NotificationUtil notifcationServices;
-	 */
+	
+	/* @Autowired NotificationUtil notifcationServices; */
+	 
 
 	@GetMapping("/getFormFiveById{formFiveId}")
 	public ResponseEntity<?> getFormFiveDtlById(@PathVariable(value = "formFiveId") Long formFiveId)
@@ -66,15 +66,88 @@ public class FormFiveRestController {
 		return ResponseEntity.ok().body(rs);
 	}
 	
-	@GetMapping("/esigned-form-five-list{status}")
-	public ResponseEntity<?> getEsignedFormFiveList(@PathVariable(value = "status") String status)
+	@GetMapping("/esigned-form-five-list/{financialYear}")
+	public ResponseEntity<?> getEsignedFormFiveList(@PathVariable(value = "financialYear") String financialYear)
 			throws ResourceNotFoundException, IOException, ParseException {
-		    List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyStatus(status);
-		    Optional.of(formFiveList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
+		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		    for(FormFiveModel m:formFiveList)
+		    {
+		    	if("SUBMITTED".equals(m.getStatus()))
+		    	{
+		    		eSignedformFiveList.add(m);
+		    	}
+		    }
 		    ResponseModel rs = new ResponseModel();
-			rs.setMessage("List found.");
-			rs.setStatus("200");
-			rs.setData(formFiveList);
+		    if(eSignedformFiveList.size()>0)
+		    {
+		    	rs.setMessage("Data found.");
+				rs.setStatus("200");
+				rs.setData(eSignedformFiveList);
+		    }
+		    else
+		    {
+		    	rs.setMessage("No data found");
+				rs.setStatus("404");
+				rs.setData("");
+		    }
+		return ResponseEntity.ok().body(rs);
+	}
+	
+	@GetMapping("/pending-form-five-list/{financialYear}")
+	public ResponseEntity<?> getPendingFormFiveList(@PathVariable(value = "financialYear") String financialYear)
+			throws ResourceNotFoundException, IOException, ParseException {
+		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		    for(FormFiveModel m:formFiveList)
+		    {
+		    	if("SUBMITTED".equals(m.getStatus()) && "ACTIVE".equals(m.getFinancialYearStatus()))
+		    	{
+		    		eSignedformFiveList.add(m);
+		    	}
+		    }
+		    ResponseModel rs = new ResponseModel();
+		    if(eSignedformFiveList.size()>0)
+		    {
+		    	rs.setMessage("Data found.");
+				rs.setStatus("200");
+				rs.setData(eSignedformFiveList);
+		    }
+		    else
+		    {
+		    	rs.setMessage("No data found");
+				rs.setStatus("404");
+				rs.setData("");
+		    }
+			
+		return ResponseEntity.ok().body(rs);
+	}
+	
+	@GetMapping("/defaulter-form-five-list/{financialYear}")
+	public ResponseEntity<?> getDefaulterFormFiveList(@PathVariable(value = "financialYear") String financialYear)
+			throws ResourceNotFoundException, IOException, ParseException {
+		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		    for(FormFiveModel m:formFiveList)
+		    {
+		    	if(!"SUBMITTED".equals(m.getStatus()) && "INACTIVE".equals(m.getFinancialYearStatus()))
+		    	{
+		    		eSignedformFiveList.add(m);
+		    	}
+		    }
+		    ResponseModel rs = new ResponseModel();
+		    if(eSignedformFiveList.size()>0)
+		    {
+		    	rs.setMessage("Data found.");
+				rs.setStatus("200");
+				rs.setData(eSignedformFiveList);
+		    }
+		    else
+		    {
+		    	rs.setMessage("No data found");
+				rs.setStatus("404");
+				rs.setData("");
+		    }
 		return ResponseEntity.ok().body(rs);
 	}
 	
@@ -110,7 +183,6 @@ public class FormFiveRestController {
 	}
 	
 	
-	
 	@PostMapping("/updateFormFive")
 	public ResponseEntity<?> updateFormFive(@RequestBody FormFiveModel formFiveModel) throws ResourceNotFoundException{
 		    Optional.ofNullable(formFiveModel)
@@ -128,15 +200,15 @@ public class FormFiveRestController {
 			@PathVariable(value="id") Long id,
 			@PathVariable(value="status") String status) throws ResourceNotFoundException {
         logger.info("call FormFiveRestController.formFiveUpdateStatusById(),<STATUS>");
-        Optional.ofNullable(id)
+        Optional.ofNullable(id) 
 				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
         FormFiveModel formFive = formFiveService.findById(id);
         Optional.ofNullable(formFive).orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
         formFive.setStatus(status);
         formFive= formFiveService.saveFormFive(formFive);
         if(formFive.getStatus().equals("ACCEPTED")){
-       // notifcationServices.sendEmail( MailContents.acceptanceMailToPromoter(formFive));
-		 // notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
+          //notifcationServices.sendEmail( MailContents.acceptanceMailToPromoter(formFive));
+		  //notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
 		  
 		  //notifcationServices.sendSms(SmsContents.acceptanceSmsToPromoter(formFive)); 
 		 
