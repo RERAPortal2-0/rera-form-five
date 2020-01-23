@@ -1,5 +1,6 @@
 package in.gov.rera.form.five.common;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,6 +19,50 @@ public class Util {
         this.calendarDate = calendarDate;
     }
 
+    
+    public static String getCanvertDateFormat(String strDate) throws ResourceNotFoundException {
+		  String newDate="";
+	      SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+	      try {
+	          Date varDate=dateFormat.parse(strDate);
+	          dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+	          newDate= dateFormat.format(varDate);
+	      }catch (Exception e) {
+	      }
+		return newDate;
+	}
+	
+	
+    public static boolean dateBetweenFinancialYear(String exlDate,String fromDate,String toDate,String msg) throws ResourceNotFoundException, ParseException
+    {
+    	  boolean flag=true;
+		  exlDate = getCanvertDateFormat(exlDate); 
+		  fromDate = getCanvertDateFormatString(fromDate);
+		  toDate = getCanvertDateFormatString(toDate); 
+		  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		  Date d1 = sdf.parse(exlDate); 
+		  Date d2 = sdf.parse(fromDate);
+		  Date d3 = sdf.parse(toDate);
+		  if(d1.compareTo(d2)<0 || d1.compareTo(d3)>0) {
+			  flag=false;
+			  throw new  ResourceNotFoundException("Date should be between financial year start date and end date in "+msg);
+		  }
+    	return flag;
+    }
+    
+	public static String getCanvertDateFormatString(String strDate) throws ResourceNotFoundException {
+		  String newDate="";
+	      SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+	      try {
+	          Date varDate=dateFormat.parse(strDate);
+	          dateFormat=new SimpleDateFormat("yyyy-mm-dd");
+	          newDate= dateFormat.format(varDate);
+	      }catch (Exception e) {
+	      }
+		return newDate;
+	}
+    
+    
 	public static String checkNullSpace(String val, String msg) throws ResourceNotFoundException {
 		if ("" != val.trim() && val != null ) {
 			return val;
@@ -85,7 +130,9 @@ public class Util {
 		}
 	
 	public static String isCALength(String str, String msg)throws ResourceNotFoundException { 
-		str=str.substring(0, str.length() - 2);
+		
+		//str=str.substring(0, str.length() - 2);
+		System.out.println("CA number length is "+str.length());
 		    if(str.length()!=6)
 		    	{
 		    	throw new  ResourceNotFoundException("CA Number length should be 6 digit in "+ msg);
@@ -124,6 +171,12 @@ public class Util {
     }
 
 	
+    
+    
+    
+    
+    
+    
 	/*
 	 * public static void main(String[] args) {
 	 * //displayFinancialDate(Calendar.getInstance());

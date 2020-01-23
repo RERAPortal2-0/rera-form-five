@@ -785,12 +785,10 @@ public class GenerateFormFivePDF {
 		  + "," + caDtl.getOfficeStateName()+ "," +
 		  caDtl.getOfficePinCode(), font4); }
 		  
-		  addLineBreak(); addLineBreak(); addPara("Attachments:", font4); addPara(" Balance Sheet : " +
-		  formFive.getFormFiveDocModel().getBalanceSheetDocName(), font4); addLineBreak();
-		  addPara("  Cash Flow : " +
-		  formFive.getFormFiveDocModel().getCashFlowDocName(), font4); addLineBreak();
-		  addPara("  Profit and Loss : " +
-		  formFive.getFormFiveDocModel().getProfitLossDocName(), font4); addLineBreak(); if
+		  addLineBreak(); addLineBreak(); addPara("Attachments:", font4); addPara(" Balance Sheet : Uploaded", font4); addLineBreak();
+		  addPara("  Cash Flow : Uploaded" 
+		  , font4); addLineBreak();
+		  addPara("  Profit and Loss : Uploaded", font4); addLineBreak(); if
 		  (this.formFive.getFormFiveOtherDocList().size() > 0) {
 		  addPara("Other Attachments:", font4); for (int i = 0; i
 		  <this.formFive.getFormFiveOtherDocList().size(); i++) { addPara("  Other Documents : " +
