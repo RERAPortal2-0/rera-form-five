@@ -1,7 +1,6 @@
 package in.gov.rera.form.five.exception;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 public class ErrorDetails {

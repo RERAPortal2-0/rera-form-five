@@ -2,18 +2,12 @@ package in.gov.rera.form.five.common;
 
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
-import in.gov.rera.form.five.exception.ResourceNotFoundException;
 
 @Service
 public class DateUtil {
@@ -48,12 +42,11 @@ public class DateUtil {
 	}
 	public static String getDateString(Calendar cal){
 		if(cal!=null){
-//		SimpleDateFormat dat=new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat dat=new SimpleDateFormat("dd/MM/yyyy");
 		return dat.format(cal.getTime());
 		}
 		
-		return " Date Not exist ";
+		return "Date Not exist";
 	}
 	
 	public static String getDateString(Date cal){

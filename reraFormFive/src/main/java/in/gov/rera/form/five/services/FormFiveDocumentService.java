@@ -9,7 +9,7 @@ public interface FormFiveDocumentService {
 
 	List<FormFiveDocumentModel> findByFormFiveId(Long id);
 
-	FormFiveDocumentModel saveDocument(FormFiveDocumentModel Model);
+	FormFiveDocumentModel saveDocument(FormFiveDocumentModel model);
 
 	void remove(Long id);
 
