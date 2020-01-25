@@ -15,6 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity(name = "FormFiveModel")
 @Table(name = "TL_FORM_FIVE")
@@ -135,6 +140,12 @@ public class FormFiveModel implements Serializable {
 
 	@Column(name = "CA_FRM_NO")
 	private String caFrmNo;
+	
+	@Column(name = "FORM_FIVE_NAME")
+	private String formFiveName;
+	
+	@Column(name = "FORM_FIVE_YEAR")
+	private String formFiveYear;
 
 	@Column(name = "CA_FRM_NAME")
 	private String caFrmName;
@@ -211,6 +222,22 @@ public class FormFiveModel implements Serializable {
 
 	public String getTotLoanEstCost() {
 		return totLoanEstCost;
+	}
+
+	public String getFormFiveName() {
+		return formFiveName;
+	}
+
+	public void setFormFiveName(String formFiveName) {
+		this.formFiveName = formFiveName;
+	}
+
+	public String getFormFiveYear() {
+		return formFiveYear;
+	}
+
+	public void setFormFiveYear(String formFiveYear) {
+		this.formFiveYear = formFiveYear;
 	}
 
 	public void setTotLoanEstCost(String totLoanEstCost) {
@@ -303,8 +330,19 @@ public class FormFiveModel implements Serializable {
 	@Column(name = "PROMOTER_REMARKS", length = 500)
 	private String promoterRemarks;
 
-	@Column(name = "CREATED_ON")
+	
+	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_ON", updatable=false)
 	private Calendar createdOn;
+
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "modifiedOn")
+	private java.util.Calendar modifiedOn;
+	
+
 
 	@Column(name = "ESIGNED_ON")
 	private Calendar eSignedOn;
@@ -425,6 +463,7 @@ public class FormFiveModel implements Serializable {
 		this.formFiveOtherDocList = formFiveOtherDocList;
 	}
 
+
 	public Calendar getCreatedOn() {
 		return createdOn;
 	}
@@ -433,6 +472,13 @@ public class FormFiveModel implements Serializable {
 		this.createdOn = createdOn;
 	}
 
+	public java.util.Calendar getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(java.util.Calendar modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
 
 	public String geteSignedOnStr() {
 		if (eSignedOn != null) {

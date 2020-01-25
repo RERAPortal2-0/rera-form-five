@@ -3,6 +3,7 @@ package in.gov.rera.form.five.controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -205,8 +206,12 @@ public class FormFiveRestController {
         FormFiveModel formFive = formFiveService.findById(id);
         Optional.ofNullable(formFive).orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
         formFive.setStatus(status);
+        if(formFive.getStatus().equalsIgnoreCase("ACCEPTED"))
+        {
+        	formFive.setAcceptedOn(Calendar.getInstance());
+        }
         formFive= formFiveService.saveFormFive(formFive);
-        if(formFive.getStatus().equals("ACCEPTED")){
+        if(formFive.getStatus().equalsIgnoreCase("ACCEPTED")){
           //notifcationServices.sendEmail( MailContents.acceptanceMailToPromoter(formFive));
 		  //notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
 		  
