@@ -87,8 +87,12 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 				List<String> fYearlist = Util.getFinancialYear(startDate, endDate,formFiveStartDate);
 				List<FormFiveModel> fList = new ArrayList<FormFiveModel>();
 				logger.debug(fYearlist);
+				int i=1;
+				
 				for (String f : fYearlist) {
 					FormFiveModel fModel = new FormFiveModel();
+					fModel.setFormFiveName("F-"+i);
+					fModel.setFormFiveYear(f.substring(5,9));
 					fModel.setFinancialYear(f);
 					fModel.setProjectId(projectId);
 					fModel.setProjectName(project.getProjectDetailsModel().getProjectName());
@@ -102,6 +106,7 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 						fModel.setFinancialYearStatus(ReraConstants.INACTIVE);
 					}
 					fList.add(fModel);
+					i++;
 				}
 				model.setFormFiveList(fList);
 				model = saveProjectFormFive(model);

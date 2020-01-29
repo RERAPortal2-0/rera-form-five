@@ -96,7 +96,7 @@ public class Util {
 	}
     
 	public static String isAlpha(String s) throws ResourceNotFoundException {
-		boolean check= s != null && s.matches("^[a-zA-Z]*$");
+		boolean check= s != null && s.matches("^[a-zA-Z ]*$");
 		if(check)
 		{
 			return s;
@@ -108,7 +108,7 @@ public class Util {
 	}
 
 	public static String isCharacter(String s, String msg) throws ResourceNotFoundException {
-		boolean check= s != null && s.matches("^[a-zA-Z]*$");
+		boolean check= s != null && s.matches("^[a-zA-Z ]*$");
 		if(check)
 		{
 			return s;
