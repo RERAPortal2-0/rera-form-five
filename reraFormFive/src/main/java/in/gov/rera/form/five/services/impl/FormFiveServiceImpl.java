@@ -47,6 +47,11 @@ public class FormFiveServiceImpl implements FormFiveService {
 	public List<FormFiveModel> findFormFiveListbyFinancialYear(String financialYear) {
 		return formFiveDao.findByFinancialYear(financialYear);
 	}
+
+	@Override
+	public List<FormFiveModel> findAllFormFiveList() {
+		return (List<FormFiveModel>) formFiveDao.findAll();
+	}
 	
 	
 

@@ -5,9 +5,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -28,15 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
-
 import in.gov.rera.form.five.common.model.ResponseModel;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
-import in.gov.rera.form.five.model.FormFiveBankDetailsModel;
 import in.gov.rera.form.five.model.FormFiveModel;
 import in.gov.rera.form.five.model.FormFiveQ4_1Model;
-import in.gov.rera.form.five.services.BankDetaillService;
 import in.gov.rera.form.five.services.FormFiveService;
-import in.gov.rera.form.five.services.ProjectFormFiveService;
 import in.gov.rera.form.five.services.Q4_1Service;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:message/common.properties")
@@ -46,13 +39,12 @@ import in.gov.rera.form.five.services.Q4_1Service;
 public class Q4_1RestController {
 	private static final Logger logger = LogManager.getLogger(Q4_1RestController.class);
 
-
 	@Autowired
 	Environment env;
 
 	@Autowired
 	Q4_1Service q4Service;
-	
+
 	@Autowired
 	FormFiveService pService;
 
@@ -60,18 +52,21 @@ public class Q4_1RestController {
 	public ResponseEntity<?> validateCaExlDtl(@RequestParam("file") MultipartFile uploadedExcelFile,
 			@RequestParam("formFiveId") Long formFiveId, @ModelAttribute("caModel") FormFiveQ4_1Model caModel)
 			throws ResourceNotFoundException, IOException, ParseException {
-
-		XSSFWorkbook caDtlExl = new XSSFWorkbook(uploadedExcelFile.getInputStream());
+		XSSFWorkbook caDtlExl = null;
+		try {
+			caDtlExl = new XSSFWorkbook(uploadedExcelFile.getInputStream());
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("Please upload valid Excel File");
+		}
 		List<FormFiveQ4_1Model> caDtlList = new ArrayList<FormFiveQ4_1Model>();
 		XSSFSheet caSheet = caDtlExl.getSheetAt(0);
-		if(!caSheet.getSheetName().equalsIgnoreCase("CA_DETAILS"))
-		{
+		if (!caSheet.getSheetName().equalsIgnoreCase("CA_DETAILS")) {
 			throw new ResourceNotFoundException(env.getProperty("INVALID_EXCEL_MSG"));
 		}
 		FormFiveModel pModel = new FormFiveModel();
 		pModel = pService.findById(formFiveId);
 		Optional.ofNullable(pModel)
-		.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("FORM FIVE ID IS NOT FOUND")));
+				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("FORM FIVE ID IS NOT FOUND")));
 		caDtlList = q4Service.validateCaDtlExl(caSheet, pModel);
 		Optional.ofNullable(uploadedExcelFile)
 				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
@@ -89,10 +84,10 @@ public class Q4_1RestController {
 		Optional.ofNullable(caDtlList)
 				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
 		Long formFiveId = 0L;
-		for (FormFiveQ4_1Model model : caDtlList) 
+		for (FormFiveQ4_1Model model : caDtlList)
 			formFiveId = model.getFormFiveId();
-			System.out.println("form five id is " + formFiveId);
-			q4Service.removeAll(formFiveId);
+		System.out.println("form five id is " + formFiveId);
+		q4Service.removeAll(formFiveId);
 		caDtlList = q4Service.saveCADtl(caDtlList);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Saved Successfully.");
@@ -113,9 +108,9 @@ public class Q4_1RestController {
 		rs.setData(caDtlList);
 		return ResponseEntity.ok().body(rs);
 	}
-	
+
 	@DeleteMapping("/remove-all/{formFiveId}")
-	public ResponseEntity<?> removeCADetailsByFormFiveId(@PathVariable(value = "formFiveId") Long formFiveId){
+	public ResponseEntity<?> removeCADetailsByFormFiveId(@PathVariable(value = "formFiveId") Long formFiveId) {
 		q4Service.removeAll(formFiveId);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Records found.");

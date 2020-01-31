@@ -95,6 +95,34 @@ public class FormFiveRestController {
 		return ResponseEntity.ok().body(rs);
 	}
 	
+	@GetMapping("/esigned-all-form-five-list")
+	public ResponseEntity<?> getEsignedAllFormFiveList()
+			throws ResourceNotFoundException, IOException, ParseException {
+		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel>  formFiveList = formFiveService.findAllFormFiveList();
+		    for(FormFiveModel m:formFiveList)
+		    {
+		    	if("SUBMITTED".equals(m.getStatus()))
+		    	{
+		    		eSignedformFiveList.add(m);
+		    	}
+		    }
+		    ResponseModel rs = new ResponseModel();
+		    if(eSignedformFiveList.size()>0)
+		    {
+		    	rs.setMessage("Data found.");
+				rs.setStatus("200");
+				rs.setData(eSignedformFiveList);
+		    }
+		    else
+		    {
+		    	rs.setMessage("No data found");
+				rs.setStatus("404");
+				rs.setData("");
+		    }
+		return ResponseEntity.ok().body(rs);
+	}
+	
 	@GetMapping("/pending-form-five-list/{financialYear}")
 	public ResponseEntity<?> getPendingFormFiveList(@PathVariable(value = "financialYear") String financialYear)
 			throws ResourceNotFoundException, IOException, ParseException {
@@ -120,7 +148,6 @@ public class FormFiveRestController {
 				rs.setStatus("404");
 				rs.setData("");
 		    }
-			
 		return ResponseEntity.ok().body(rs);
 	}
 	
@@ -156,13 +183,11 @@ public class FormFiveRestController {
 	@GetMapping("/getFormFiveListByCaNo{caNumber}")
 	public ResponseEntity<?> getFormFiveListByCaNo(@PathVariable(value = "caNumber") String caNumber)
 			throws ResourceNotFoundException, IOException, ParseException {
-		    logger.debug("called id is " + caNumber);    
 		    ProjectFormFiveModel pModel= new ProjectFormFiveModel();
 		    List<FormFiveModel> formFiveList = formFiveService.findByCaNumber(caNumber);
 		    List<UserTransactionModel> assignedFFiveList= new ArrayList<UserTransactionModel>();
 		    for(FormFiveModel fModel:formFiveList)
 		    {
-		       System.out.println(pModel.getProjectId());
 		       UserTransactionModel model= new UserTransactionModel();
 		       if(!"REJECTED".equals(fModel.getStatus())) {
 		       model.setCaNo(fModel.getCaNumber());

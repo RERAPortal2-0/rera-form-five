@@ -55,8 +55,12 @@ public class Q5_1RestController {
 			 @ModelAttribute("depositedModel") FormFiveQ5_1Model depositedModel
 			) throws ResourceNotFoundException, IOException, ParseException{
 		    System.out.println("form five id is "+formFiveId);
-		    
-		XSSFWorkbook depositExl = new XSSFWorkbook(uploadedExcelFile.getInputStream());
+		    XSSFWorkbook depositExl=null;
+		    try {    
+		 depositExl = new XSSFWorkbook(uploadedExcelFile.getInputStream());
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("Please upload valid Excel File");
+		}
 		List<FormFiveQ5_1Model> depositedList= new ArrayList<FormFiveQ5_1Model>();
 		XSSFSheet deopsitedSheet = depositExl.getSheetAt(0);
 		if(!deopsitedSheet.getSheetName().equalsIgnoreCase("5.1_SHEET"))

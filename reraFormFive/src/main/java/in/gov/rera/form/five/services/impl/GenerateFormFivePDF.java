@@ -428,13 +428,15 @@ public class GenerateFormFivePDF {
 			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
 
 			table.addCell(createCell("Sr.No.", font3));
-			table.addCell(createCell("Certifying Professional", font3));
+			table.addCell(createCell("CA Name", font3));
+			table.addCell(createCell("CA Number", font3));
 			table.addCell(createCell("Date of Certificate", font3));
 
 			int x = 1;
 			for (FormFiveQ4_1Model md : this.formFive.getFormFiveQ4_1List()) {
 				table.addCell(createCell("" + x, fontQ6));
 				table.addCell(createCell(md.getCaName(), fontQ6));
+				table.addCell(createCell(md.getCaNumber(), fontQ6));
 				table.addCell(createCell(md.getDateCertificate(), fontQ6));
 				x++;
 			}
@@ -484,7 +486,7 @@ public class GenerateFormFivePDF {
 
 		addParaRT(this.formFive.getQuestion_6().toUpperCase(), font3);
 
-		if (this.formFive.getQuestion_6().equalsIgnoreCase("NEW") && this.formFive.getQuestion_6().equalsIgnoreCase("ONGOING")) {
+		if (this.formFive.getQuestion_6().equalsIgnoreCase("NEW")) {
 			content = "    6.1. In case of New Project Registration, whether there was any booking taken prior to project registration?";
 			addPara(content, fontQ6);
 
@@ -515,8 +517,10 @@ public class GenerateFormFivePDF {
 		content = "7. Whether all amounts withdrawn from RERA Bank Account were within the withdrawal limit as certified under the relevant form 3 issued"
 				+ " during the reporting period?";
 		addPara(content, fontQ6);
+		if(this.formFive.getcWithdrawLimit()!=null) {
 		addPara("   Cumulative withdrawal limit on 31st March as at Sr. No. 6 of Form-3 (Rs.): "
 				+ this.formFive.getcWithdrawLimit(), fontQ6);
+		}
 		addPara("   Cumulative withdrawal from separate A/C till 31st March (Rs.): "
 				+ this.formFive.getcWithdrawSepAc(), fontQ6);
 		addParaRT(this.formFive.getQuestion_7().toUpperCase(), font3);
@@ -606,7 +610,9 @@ public class GenerateFormFivePDF {
 
 		content = "10. Whether the project is executed by availing any loans/borrowing?";
 		addPara(content, fontQ6);
+		if(this.formFive.getEstimatedCost()!=null) {
 		addPara("   Estimated cost of Project (Rs.): " + this.formFive.getEstimatedCost(), fontQ6);
+		}
 		addParaRT(this.formFive.getQuestion_10().toUpperCase(), font3);
 
 		if (this.formFive.getQuestion_10().equalsIgnoreCase("YES")) {
@@ -638,9 +644,10 @@ public class GenerateFormFivePDF {
 			}
 			addLineBreak();
 			document.add(table);
-
+if(this.formFive.getTotLoanEstCost()!=null) {
 			addPara("     Total loan as % of Estimated cost of Project mentioned above: "
 					+ this.formFive.getTotLoanEstCost() + "%", fontQ6);
+}
 			content = "     10.2. Whether the financial encumbrance is reported to Gujarat RERA?";
 			addPara(content, fontQ6);
 
@@ -786,10 +793,10 @@ public class GenerateFormFivePDF {
 		  caDtl.getOfficePinCode(), font4); }
 		  
 		  addLineBreak(); addLineBreak(); addPara("Attachments:", font4); addPara(" Balance Sheet : Uploaded", font4); addLineBreak();
-		  addPara("  Cash Flow : Uploaded" 
+		  addPara("  Cash Flows Statement : Uploaded" 
 		  , font4); addLineBreak();
-		  addPara("  Profit and Loss : Uploaded", font4); addLineBreak(); if
-		  (this.formFive.getFormFiveOtherDocList().size() > 0) {
+		  addPara("  Profit & Loss account : Uploaded", font4); addLineBreak(); 
+		  if(this.formFive.getFormFiveOtherDocList().size() > 0) {
 		  addPara("Other Attachments:", font4); for (int i = 0; i
 		  <this.formFive.getFormFiveOtherDocList().size(); i++) { addPara("  Other Documents : " +
 		  formFive.getFormFiveOtherDocList().get(i).getDocName(), font4);
@@ -802,7 +809,6 @@ public class GenerateFormFivePDF {
 		LOGGER.debug("generatePdf() IS ENDED");
 	}
 
-	
 	
 	   public Image getWatermarkedImage(PdfContentByte cb, Image img, String watermark) throws DocumentException  {
 	       
