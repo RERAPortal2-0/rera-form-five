@@ -615,6 +615,15 @@ public class GenerateFormFivePDF {
 		}
 		addParaRT(this.formFive.getQuestion_10().toUpperCase(), font3);
 
+		String formFiveYear="";
+		if(this.formFive.getFormFiveYear()!=null)
+		{
+			int fYear = Integer.parseInt(this.formFive.getFormFiveYear());
+			formFiveYear=String.valueOf(fYear-1);
+		}
+		
+	
+		
 		if (this.formFive.getQuestion_10().equalsIgnoreCase("YES")) {
 			content = "     10.1. If yes, please provide details as below:";
 
@@ -624,14 +633,12 @@ public class GenerateFormFivePDF {
 			table.setWidthPercentage(91);
 			table.spacingBefore();
 			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
-
 			table.addCell(createCell("Sr.No.", font3));
 			table.addCell(createCell("Name & Type of Lender", font3));
 			table.addCell(createCell("Amount of Loan Sanction(Rs)", font3));
 			table.addCell(createCell("Sanction Date", font3));
-			table.addCell(createCell("Loan outstanding as on end date", font3));
+			table.addCell(createCell("Loan outstanding as on 31st March "+formFiveYear+" (Rs.)", font3));
 			table.addCell(createCell("Collatera/Mortgeage details", font3));
-
 			int x = 1;
 			for (FormFiveQ10_1Model md : this.formFive.getProjectFormFiveQ10_1List()) {
 				table.addCell(createCell("" + x, fontQ6));
