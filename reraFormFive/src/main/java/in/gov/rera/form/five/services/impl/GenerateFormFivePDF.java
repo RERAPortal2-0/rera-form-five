@@ -73,26 +73,27 @@ public class GenerateFormFivePDF {
 	public static final Font FONT = new Font(FontFamily.HELVETICA, 12, Font.NORMAL, GrayColor.GRAYWHITE);
 
 	private static String contextPath = null;
-	 protected static String caLogoPath = null;
+	protected static String caLogoPath = null;
 	private FormFiveModel formFive;
 	private PdfWriter writer;
 	private Document document;
 	private ProjectRegistrationModel project;
 	private CAModel caDtl;
-	//private String fontPath;
+	// private String fontPath;
 	private static Long formFiveId;
 	public static byte[] caImage;
 	// NumberFormat india = NumberFormat.getCurrencyInstance(new Locale("en",
 	// "IN"));
 	DecimalFormat fmt = new DecimalFormat("##,##,###");
 
-	public GenerateFormFivePDF(FormFiveModel formFive,Long projectRegId,String prjDtlUrl,String caDtlUrl, byte[] bt) throws ResourceNotFoundException {
+	public GenerateFormFivePDF(FormFiveModel formFive, Long projectRegId, String prjDtlUrl, String caDtlUrl, byte[] bt)
+			throws ResourceNotFoundException {
 		this.formFive = formFive;
-		//IMAGE1=reraLogoPath;
-		//this.caLogoPath=caImage;
-		this.caImage=bt;
-			this.project = RestTamplateUtility.projectDtl(projectRegId,prjDtlUrl );
-			this.caDtl = RestTamplateUtility.caDtl(formFive.getCaNumber(),caDtlUrl );
+		// IMAGE1=reraLogoPath;
+		// this.caLogoPath=caImage;
+		this.caImage = bt;
+		this.project = RestTamplateUtility.projectDtl(projectRegId, prjDtlUrl);
+		this.caDtl = RestTamplateUtility.caDtl(formFive.getCaNumber(), caDtlUrl);
 	}
 
 	public void generateFormFive(HttpServletResponse response) throws Exception {
@@ -125,7 +126,7 @@ public class GenerateFormFivePDF {
 		// ResourceBundle rb = ResourceBundle.getBundle("common.properties");
 		// fontPath = env.getProperty("FONT_PATH");
 		// caLogoPath = "../../../../../resources/images/reralogo.jpg";
-		//IMAGE1 = "../../../../../resources/images/reralogo.jpg";
+		// IMAGE1 = "../../../../../resources/images/reralogo.jpg";
 		// LOGGER.debug("Font path::" + fontPath);
 		LOGGER.debug("static block of ProjectAlterationCertificate is ended");
 
@@ -172,34 +173,29 @@ public class GenerateFormFivePDF {
 
 		this.document.open();
 
-		
 		/*
 		 * PdfContentByte cb = writer.getDirectContentUnder();
 		 * document.add(getWatermarkedImage(cb, Image.getInstance(IMAGE1), "Bruno"));
 		 * PdfContentByte canvas1 = writer.getDirectContentUnder();
 		 */
-		 
-		  
-	       PdfContentByte canvas1 = writer.getDirectContentUnder();
-	     
-	        Image image = Image.getInstance(caImage);
-	        image.setAbsolutePosition(45f, 730f);
-	        image.scaleAbsolute(90, 65);
-	        canvas1.saveState();
-	        PdfGState state = new PdfGState();
-	        canvas1.setGState(state);
-	        canvas1.addImage(image);
-	        canvas1.restoreState();
-		  
-		
+
+		PdfContentByte canvas1 = writer.getDirectContentUnder();
+
+		Image image = Image.getInstance(caImage);
+		image.setAbsolutePosition(45f, 730f);
+		image.scaleAbsolute(90, 65);
+		canvas1.saveState();
+		PdfGState state = new PdfGState();
+		canvas1.setGState(state);
+		canvas1.addImage(image);
+		canvas1.restoreState();
+
 		/*
 		 * PdfContentByte canvas = writer.getDirectContent(); Rectangle rect = new
 		 * Rectangle(20, 20, 580, 830); rect.setBorder(Rectangle.BOX);
 		 * rect.setBorderColor(new BaseColor(192, 0, 0)); rect.setBorderWidth(5);
 		 * canvas.rectangle(rect);
 		 */
-		 
-		 
 
 		String header3 = "To,";
 		String header4 = "REGISTRATION CERTIFICATE OF PROJECT";
@@ -215,18 +211,16 @@ public class GenerateFormFivePDF {
 		}
 
 		addParaRT(formFive.getCaName().toUpperCase() + "(" + formFive.getCaNumber() + ")", font4);
-		
-		  if(caDtl.getOfficeTalukaName()!=null){
-		  addParaRT(caDtl.getOfficeAddress() + ",\n" +
-			caDtl.getOfficeTalukaName() + "," +
-			caDtl.getOficeDistictName() + "," +
-		  caDtl.getOfficePinCode(), font4); } else {
-		  addParaRT(caDtl.getOfficeAddress() + "\n" + "," +
-				  caDtl.getOficeDistictName() + "," +
-				  caDtl.getOfficePinCode(), font4); } addParaRT("Email: " +
-		  caDtl.getEmailId() + ",   Mobile: " +
-		  caDtl.getMobileNo(), font4);
-		 
+
+		if (caDtl.getOfficeTalukaName() != null) {
+			addParaRT(caDtl.getOfficeAddress() + ",\n" + caDtl.getOfficeTalukaName() + "," + caDtl.getOficeDistictName()
+					+ "," + caDtl.getOfficePinCode(), font4);
+		} else {
+			addParaRT(caDtl.getOfficeAddress() + "\n" + "," + caDtl.getOficeDistictName() + ","
+					+ caDtl.getOfficePinCode(), font4);
+		}
+		addParaRT("Email: " + caDtl.getEmailId() + ",   Mobile: " + caDtl.getMobileNo(), font4);
+
 		Paragraph pr2 = new Paragraph(" ", font2);
 		pr2.setAlignment(Paragraph.ALIGN_CENTER);
 		LineSeparator line = new LineSeparator();
@@ -248,8 +242,7 @@ public class GenerateFormFivePDF {
 
 		addPara("To,", font2);
 
-		
-		  addPara(this.project.getPromoterName() , font4);
+		addPara(this.project.getPromoterName(), font4);
 		/*
 		 * addPara(this.project.getProjectDetailsModel().get + ", " +
 		 * this.project.getPromoterDetailsModel().getAddressLine2(), font4);
@@ -260,44 +253,40 @@ public class GenerateFormFivePDF {
 		 * getStateUtName() + " " +
 		 * this.project.getPromoterDetailsModel().getPinCode(),font4);
 		 */
-		 
 
 		addLineBreak();
 		addLineBreak();
 
 		par = addPara(null, "I/We ", font4);
 
-		
-		  if (!isFirmExist) { par = addPara(par, formFive.getCaName().toUpperCase(),
-		  fontUL);
-		  
-		  } else {
-		 
-		
-		  par = addPara(par, formFive.getCaName() .toUpperCase() + " " +
-		  caDesg.toUpperCase() + " of " + caFirmName.toUpperCase(), fontUL); } par =
-		  addPara(par,
-		  " the auditor, have examined books of accounts and all the relevant records of "
-		  , font4); par = addPara(par,
-		  this.project.getPromoterName().toUpperCase(),
-		  fontUL); par = addPara(par, " having PAN no. ", font4);
-		  //par = addPara(par,this.project.getPromoterDetailsModel().getPanNo(), fontUL);
-		  par =
-		  addPara(par, " related to ", font4); par = addPara(par,
-		  this.project.getProjectDetailsModel().getProjectName().toUpperCase(),
-		  fontUL); 
-		  //par = addPara(par, " project (RERA registration no. ", font4);
-		  //par =		  addPara(par, this.project.getProjRegNo() , fontUL); par =
-		  addPara(par, " ) having site address as ", font4);
-		  
-		  par = addPara(par, this.project.getProjectDetailsModel().getProjectAddress() +
-		  ", " + this.project.getProjectDetailsModel().getProjectAddress2() + " " +
-		  this.project.getProjectDetailsModel().getDistName() +
-		  ", " +
-		  this.project.getProjectDetailsModel().getStateName().toUpperCase(), fontUL); par = addPara(par,
-		  " for year ending on ", font4); par = addPara(par,
-		  formFive.getCertToDate(), fontUL); par = addPara(par, " .", font4);
-		 
+		if (!isFirmExist) {
+			par = addPara(par, formFive.getCaName().toUpperCase(), fontUL);
+
+		} else {
+
+			par = addPara(par,
+					formFive.getCaName().toUpperCase() + " " + caDesg.toUpperCase() + " of " + caFirmName.toUpperCase(),
+					fontUL);
+		}
+		par = addPara(par, " the auditor, have examined books of accounts and all the relevant records of ", font4);
+		par = addPara(par, this.project.getPromoterName().toUpperCase(), fontUL);
+		par = addPara(par, " having PAN no. ", font4);
+		// par = addPara(par,this.project.getPromoterDetailsModel().getPanNo(), fontUL);
+		par = addPara(par, " related to ", font4);
+		par = addPara(par, this.project.getProjectDetailsModel().getProjectName().toUpperCase(), fontUL);
+		// par = addPara(par, " project (RERA registration no. ", font4);
+		// par = addPara(par, this.project.getProjRegNo() , fontUL); par =
+		addPara(par, " ) having site address as ", font4);
+
+		par = addPara(par,
+				this.project.getProjectDetailsModel().getProjectAddress() + ", "
+						+ this.project.getProjectDetailsModel().getProjectAddress2() + " "
+						+ this.project.getProjectDetailsModel().getDistName() + ", "
+						+ this.project.getProjectDetailsModel().getStateName().toUpperCase(),
+				fontUL);
+		par = addPara(par, " for year ending on ", font4);
+		par = addPara(par, formFive.getCertToDate(), fontUL);
+		par = addPara(par, " .", font4);
 
 		document.add(par);
 
@@ -318,17 +307,17 @@ public class GenerateFormFivePDF {
 				+ " accounting and other relevant supporting records and documents required for the purpose of this certificate. This responsibility includes the design, "
 				+ "implementation and maintenance of necessary and appropriate internal control commensurate with the nature and size of entity.";
 		par = addPara(null, "It is the primary responsibility of the Management of ", font4);
-		 par=addPara(par,this.project.getPromoterName().toUpperCase(),fontUL);
+		par = addPara(par, this.project.getPromoterName().toUpperCase(), fontUL);
 		par = addPara(par, content, font4);
 		document.add(par);
 
 		addLineBreak();
 		addLineBreak();
 
-		 content = "Period under Certificate: from " +
-		 this.formFive.getCertFromDate() + " to " +
-		 this.formFive.getCertToDate(); 
-		 addPara(content, font3); addLineBreak();
+		content = "Period under Certificate: from " + this.formFive.getCertFromDate() + " to "
+				+ this.formFive.getCertToDate();
+		addPara(content, font3);
+		addLineBreak();
 
 		content = "1. Whether separate RERA Bank Account has been opened as envisaged in Gujarat RERA Bank Account Direction,2019?";
 		addPara(content, fontQ6);
@@ -338,7 +327,7 @@ public class GenerateFormFivePDF {
 		if (this.formFive.getQuestion_1().equalsIgnoreCase("NO")) {
 			content = "   1.1.  Whether the existing operational bank account was made known at the time of application for registration as RERA Bank Account?";
 			addPara(content, fontQ6);
-                
+
 			addParaRT(this.formFive.getQuestion_1_1().toUpperCase(), font3);
 		}
 
@@ -395,6 +384,9 @@ public class GenerateFormFivePDF {
 			table.addCell(createCell("Closing Balance " + formFive.getCertToDate(), font3));
 			table.addCell(createCell(bnk.getFormFiveClosingBal(), fontQ6));
 
+			table.addCell(" ");
+			table.addCell(" ");
+			
 			b++;
 		}
 
@@ -422,7 +414,7 @@ public class GenerateFormFivePDF {
 			addPara(content, fontQ6);
 			addLineBreak();
 
-			table = new PdfPTable(3);
+			table = new PdfPTable(4);
 			table.setWidthPercentage(91);
 			table.spacingBefore();
 			table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -492,23 +484,25 @@ public class GenerateFormFivePDF {
 
 			addParaRT(this.formFive.getQuestion_6_1().toUpperCase(), font3);
 
-			if (this.formFive.getQuestion_6_1().equalsIgnoreCase("YES")) {
-				content = "    6.2. if Yes, please provide details as below:";
-				addPara(content, fontQ6);
-
-				content = "        6.2.1. Number of such units booked :-"
-						+ this.formFive.getFormFiveQ6_2Model().getNumberOfBookedUnits();
-				addPara(content, fontQ6);
-
-				content = "        6.2.2. Amount collected from such bookings :-"
-						+ this.formFive.getFormFiveQ6_2Model().getAmtCollectedBooking();
-				addPara(content, fontQ6);
-
-				content = "        6.2.3. Total consideration of such bookings :-"
-						+ this.formFive.getFormFiveQ6_2Model().getTotalConsiderBooking();
-				addPara(content, fontQ6);
-
-			}
+			/*
+			 * if (this.formFive.getQuestion_6_1().equalsIgnoreCase("YES")) { content =
+			 * "    6.2. if Yes, please provide details as below:"; addPara(content,
+			 * fontQ6);
+			 * 
+			 * content = "        6.2.1. Number of such units booked :-" +
+			 * this.formFive.getFormFiveQ6_2Model().getNumberOfBookedUnits();
+			 * addPara(content, fontQ6);
+			 * 
+			 * content = "        6.2.2. Amount collected from such bookings :-" +
+			 * this.formFive.getFormFiveQ6_2Model().getAmtCollectedBooking();
+			 * addPara(content, fontQ6);
+			 * 
+			 * content = "        6.2.3. Total consideration of such bookings :-" +
+			 * this.formFive.getFormFiveQ6_2Model().getTotalConsiderBooking();
+			 * addPara(content, fontQ6);
+			 * 
+			 * }
+			 */
 
 		}
 
@@ -517,9 +511,9 @@ public class GenerateFormFivePDF {
 		content = "7. Whether all amounts withdrawn from RERA Bank Account were within the withdrawal limit as certified under the relevant form 3 issued"
 				+ " during the reporting period?";
 		addPara(content, fontQ6);
-		if(this.formFive.getcWithdrawLimit()!=null) {
-		addPara("   Cumulative withdrawal limit on 31st March as at Sr. No. 6 of Form-3 (Rs.): "
-				+ this.formFive.getcWithdrawLimit(), fontQ6);
+		if (this.formFive.getcWithdrawLimit() != null) {
+			addPara("   Cumulative withdrawal limit on 31st March as at Sr. No. 6 of Form-3 (Rs.): "
+					+ this.formFive.getcWithdrawLimit(), fontQ6);
 		}
 		addPara("   Cumulative withdrawal from separate A/C till 31st March (Rs.): "
 				+ this.formFive.getcWithdrawSepAc(), fontQ6);
@@ -610,20 +604,17 @@ public class GenerateFormFivePDF {
 
 		content = "10. Whether the project is executed by availing any loans/borrowing?";
 		addPara(content, fontQ6);
-		if(this.formFive.getEstimatedCost()!=null) {
-		addPara("   Estimated cost of Project (Rs.): " + this.formFive.getEstimatedCost(), fontQ6);
+		if (this.formFive.getEstimatedCostOfProject() != null) {
+			addPara("   Estimated cost of Project (Rs.): " + this.formFive.getEstimatedCostOfProject(), fontQ6);
 		}
 		addParaRT(this.formFive.getQuestion_10().toUpperCase(), font3);
 
-		String formFiveYear="";
-		if(this.formFive.getFormFiveYear()!=null)
-		{
+		String formFiveYear = "";
+		if (this.formFive.getFormFiveYear() != null) {
 			int fYear = Integer.parseInt(this.formFive.getFormFiveYear());
-			formFiveYear=String.valueOf(fYear-1);
+			formFiveYear = String.valueOf(fYear - 1);
 		}
-		
-	
-		
+
 		if (this.formFive.getQuestion_10().equalsIgnoreCase("YES")) {
 			content = "     10.1. If yes, please provide details as below:";
 
@@ -637,8 +628,8 @@ public class GenerateFormFivePDF {
 			table.addCell(createCell("Name & Type of Lender", font3));
 			table.addCell(createCell("Amount of Loan Sanction(Rs)", font3));
 			table.addCell(createCell("Sanction Date", font3));
-			table.addCell(createCell("Loan outstanding as on 31st March "+formFiveYear+" (Rs.)", font3));
-			table.addCell(createCell("Collatera/Mortgeage details", font3));
+			table.addCell(createCell("Loan outstanding as on 31st March " + formFiveYear + " (Rs.)", font3));
+			table.addCell(createCell("Collateral/Mortgage Details", font3));
 			int x = 1;
 			for (FormFiveQ10_1Model md : this.formFive.getProjectFormFiveQ10_1List()) {
 				table.addCell(createCell("" + x, fontQ6));
@@ -651,10 +642,10 @@ public class GenerateFormFivePDF {
 			}
 			addLineBreak();
 			document.add(table);
-if(this.formFive.getTotLoanEstCost()!=null) {
-			addPara("     Total loan as % of Estimated cost of Project mentioned above: "
-					+ this.formFive.getTotLoanEstCost() + "%", fontQ6);
-}
+			if (this.formFive.getTotLoanEstCost() != null) {
+				addPara("     Total loan as % of Estimated cost of Project mentioned above: "
+						+ this.formFive.getTotLoanEstCost() + "%", fontQ6);
+			}
 			content = "     10.2. Whether the financial encumbrance is reported to Gujarat RERA?";
 			addPara(content, fontQ6);
 
@@ -713,7 +704,7 @@ if(this.formFive.getTotLoanEstCost()!=null) {
 
 		addLineBreak();
 
-		content = "12. Please specify any other things which are not covered above.(Maximum 200 words)";
+		content = "12. Please specify any other things which are not covered above.";
 		addPara(content, fontQ6);
 
 		pr = new Paragraph(this.formFive.getQuestion_12(), font4);
@@ -723,21 +714,15 @@ if(this.formFive.getTotLoanEstCost()!=null) {
 		addLineBreak();
 		addLineBreak();
 
-		
-		  content =
-		  "I/We have obtainted all necessary information and explianation from the Promoter, during the course of our audit, which in my/our"
-		  +
-		  " opinion are necessary for the purpose of this certificate. Also I/We have attached herewith the copies of Financial Statements"
-		  + " and Audit Report of the "
-		  +this.project.
-		  getPromoterName()+"(Promoter Name) for the financial year ending on"+ formFive
-		  .getCertToDate();
-		 
+		content = "* I/We have obtainted all necessary information and explianation from the Promoter, during the course of our audit, which in my/our"
+				+ " opinion are necessary for the purpose of this certificate. Also I/We have attached herewith the copies of Financial Statements"
+				+ " and Audit Report of the " + this.project.getPromoterName()
+				+ "(Promoter Name) for the financial year ending on" + formFive.getCertToDate();
 
-		 par = addPara(null, content, font4); par =
-		 addPara(par,this.project.getPromoterName().toUpperCase(),fontUL);
+		par = addPara(null, content, font4);
+		par = addPara(par, this.project.getPromoterName().toUpperCase(), fontUL);
 		par = addPara(par, "(Promoter Name) for the financial year ending on ", font4);
-		 par = addPara(par, formFive.getCertToDate(), fontUL);
+		par = addPara(par, formFive.getCertToDate(), fontUL);
 		par = addPara(par, " .", font4);
 		document.add(par);
 
@@ -748,11 +733,9 @@ if(this.formFive.getTotLoanEstCost()!=null) {
 				+ " and documents produced before me and explanations provided to me by the management of the Promoter based on the verfication of books of accounts till "; // +
 																																												// formFive.getCertToDateStr();
 		par = addPara(null,
-				"I/We  hereby confirm that I/We have examined the prescribed registers, books and documents and the relevant records of ",
+				"* I/We  hereby confirm that I/We have examined the prescribed registers, books and documents and the relevant records of ",
 				font4);
-		 par = addPara(par,
-		 this.project.getProjectDetailsModel().getProjectName().toUpperCase(),
-		 fontUL);
+		par = addPara(par, this.project.getProjectDetailsModel().getProjectName().toUpperCase(), fontUL);
 		par = addPara(par, content, font4);
 		par = addPara(par, formFive.getCertToDate(), fontUL);
 		par = addPara(par, " .", font4);
@@ -762,74 +745,75 @@ if(this.formFive.getTotLoanEstCost()!=null) {
 		addLineBreak();
 
 		par = addPara(null,
-				"I/We  hereby declare that, I/We or any of us/our associate have not issued RERA Form-3 for any of the projects of ",
+				"* I/We  hereby declare that, I/We or any of us/our associate have not issued RERA Form-3 for any of the projects of ",
 				font4);
-		 par = addPara(par,this.project.getPromoterName(),
-		 fontUL); par =
-		addPara(par, " .", font4);
+		par = addPara(par, this.project.getPromoterName(), fontUL);
+		par = addPara(par, " .", font4);
 		document.add(par);
 
 		addLineBreak();
 		addLineBreak();
 
-		 addPara("Place : " +
-		 caDtl.getOficeDistictName() , font4);
-		 //addPara("Date : " + in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()), font4);
+		addPara("Place : " + caDtl.getOficeDistictName(), font4);
+		// addPara("Date : " +
+		// in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()),
+		// font4);
 
-		 addPara("Date : " + in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()), font4);
-		 
+		addPara("Date : " + in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()), font4);
+
 		addParaRT("For,", font4);
 		addLineBreak();
 
 		addParaRT("Name Of CA Firm: " + caFirmName, font4);
 		addParaRT("Firm Reg. No. : " + caFirmNo, font4);
-		 addParaRT("Name of Signature :" +
-		 formFive.getCaName().toUpperCase(), font4);
+		addParaRT("Name of Signature :" + formFive.getCaName().toUpperCase(), font4);
 		addParaRT("Designation : " + formFive.getCaDesignation(), font4);
 		addParaRT("(Signature and Stamps/Seal of the Signatory CA)", font4);
-		 addParaRT("Membership Number: " + formFive.getCaNumber(), font4);
-		 addParaRT("UDI Number: " + formFive.getCaUdinNumber(), font4);
-		
-		  if(caDtl.getOfficeTalukaName() !=null){
-		  addParaRT("Full Address: " + caDtl.getOfficeAddress() +
-		  ",\n" + caDtl.getOfficeTalukaName() + "," +
-		  caDtl.getOficeDistictName() + "," +
-		  caDtl.getOfficePinCode(), font4); } else {
-		  addParaRT("Full Address: " + caDtl.getOfficeAddress() + "\n"
-		  + "," + caDtl.getOfficeStateName()+ "," +
-		  caDtl.getOfficePinCode(), font4); }
-		  
-		  addLineBreak(); addLineBreak(); addPara("Attachments:", font4); addPara(" Balance Sheet : Uploaded", font4); addLineBreak();
-		  addPara("  Cash Flows Statement : Uploaded" 
-		  , font4); addLineBreak();
-		  addPara("  Profit & Loss account : Uploaded", font4); addLineBreak(); 
-		  if(this.formFive.getFormFiveOtherDocList().size() > 0) {
-		  addPara("Other Attachments:", font4); for (int i = 0; i
-		  <this.formFive.getFormFiveOtherDocList().size(); i++) { addPara("  Other Documents : " +
-		  formFive.getFormFiveOtherDocList().get(i).getDocName(), font4);
-		  }
-		  
-		  }
-		 
+		addParaRT("Membership Number: " + formFive.getCaNumber(), font4);
+		addParaRT("UDI Number: " + formFive.getCaUdinNumber(), font4);
+
+		if (caDtl.getOfficeTalukaName() != null) {
+			addParaRT("Full Address: " + caDtl.getOfficeAddress() + ",\n" + caDtl.getOfficeTalukaName() + ","
+					+ caDtl.getOficeDistictName() + "," + caDtl.getOfficePinCode(), font4);
+		} else {
+			addParaRT("Full Address: " + caDtl.getOfficeAddress() + "\n" + "," + caDtl.getOfficeStateName() + ","
+					+ caDtl.getOfficePinCode(), font4);
+		}
+
+		addLineBreak();
+		addLineBreak();
+		addPara("Attachments:", font4);
+		addPara("  Balance Sheet : Uploaded", font4);
+		addLineBreak();
+		addPara("  Cash Flows Statement : Uploaded", font4);
+		addLineBreak();
+		addPara("  Profit & Loss account : Uploaded", font4);
+		addLineBreak();
+		if (this.formFive.getFormFiveOtherDocList().size() > 0) {
+			addPara("Other Attachments:", font4);
+			for (int i = 0; i < this.formFive.getFormFiveOtherDocList().size(); i++) {
+				addPara("  Other Documents : " + formFive.getFormFiveOtherDocList().get(i).getDocName(), font4);
+			}
+
+		}
+
 		document.close();
 
 		LOGGER.debug("generatePdf() IS ENDED");
 	}
 
-	
-	   public Image getWatermarkedImage(PdfContentByte cb, Image img, String watermark) throws DocumentException  {
-	       
-		    float width = img.getScaledWidth();
-	        float height = img.getScaledHeight();
-	        PdfTemplate template = cb.createTemplate(width, height);
-	      
-	        template.addImage(img, width, 0, 0, height, 0, 0);
-	        ColumnText.showTextAligned(template, Element.ALIGN_CENTER,
-	        		new Phrase(watermark, FONT), width / 2, height / 2, 30);
-	        return Image.getInstance(template);
-	    }
-	
-	
+	public Image getWatermarkedImage(PdfContentByte cb, Image img, String watermark) throws DocumentException {
+
+		float width = img.getScaledWidth();
+		float height = img.getScaledHeight();
+		PdfTemplate template = cb.createTemplate(width, height);
+
+		template.addImage(img, width, 0, 0, height, 0, 0);
+		ColumnText.showTextAligned(template, Element.ALIGN_CENTER, new Phrase(watermark, FONT), width / 2, height / 2,
+				30);
+		return Image.getInstance(template);
+	}
+
 	private Paragraph addPara(Paragraph pr, String cnt, Font font) throws Exception {
 		if (pr == null) {
 			pr = new Paragraph();
@@ -878,26 +862,33 @@ if(this.formFive.getTotLoanEstCost()!=null) {
 	}
 }
 
-  class RedBorder extends PdfPageEventHelper {
-  
-  @Override public void onStartPage(PdfWriter writer, Document document) { try
-  { PdfContentByte canvas1 = writer.getDirectContentUnder(); 
-  Image image = Image.getInstance(GenerateFormFivePDF.caImage);
-  image.setAbsolutePosition(50f, 180f); 
-  image.scaleAbsolute(520, 480);
-  canvas1.saveState(); PdfGState state = new PdfGState();
-  state.setFillOpacity(0.1f); canvas1.setGState(state);
-  canvas1.addImage(image); canvas1.restoreState();
-  
-  canvas1 = writer.getDirectContent();
-  Rectangle rect = new Rectangle(20, 20,
-  580, 830); rect.setBorder(Rectangle.BOX); // 
-  rect.setBorderColor(new
-  BaseColor(192, 0, 0)); rect.setBorderColor(BaseColor.GRAY);
-  rect.setBorderWidth(4); canvas1.rectangle(rect);
-  
-  } catch (Exception ex) { ex.printStackTrace(); } }
-  
-  }
- 
- 
+class RedBorder extends PdfPageEventHelper {
+
+	@Override
+	public void onStartPage(PdfWriter writer, Document document) {
+		try {
+			PdfContentByte canvas1 = writer.getDirectContentUnder();
+			Image image = Image.getInstance(GenerateFormFivePDF.caImage);
+			image.setAbsolutePosition(50f, 180f);
+			image.scaleAbsolute(520, 480);
+			canvas1.saveState();
+			PdfGState state = new PdfGState();
+			state.setFillOpacity(0.1f);
+			canvas1.setGState(state);
+			canvas1.addImage(image);
+			canvas1.restoreState();
+
+			canvas1 = writer.getDirectContent();
+			Rectangle rect = new Rectangle(20, 20, 580, 830);
+			rect.setBorder(Rectangle.BOX); //
+			rect.setBorderColor(new BaseColor(192, 0, 0));
+			rect.setBorderColor(BaseColor.GRAY);
+			rect.setBorderWidth(4);
+			canvas1.rectangle(rect);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+}

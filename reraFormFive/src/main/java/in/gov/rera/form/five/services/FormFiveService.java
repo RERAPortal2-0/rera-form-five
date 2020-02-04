@@ -3,6 +3,7 @@ package in.gov.rera.form.five.services;
 import java.util.List;
 
 import in.gov.rera.form.five.model.FormFiveModel;
+import in.gov.rera.form.five.model.transaction.FormFiveDto;
 
 public interface FormFiveService {
 
@@ -19,4 +20,8 @@ public interface FormFiveService {
 	List<FormFiveModel> findFormFiveListbyFinancialYear(String financialYear);
 
 	List<FormFiveModel> findAllFormFiveList();
+
+	List<FormFiveModel> findFormFiveListbyFilter(FormFiveDto model);
+
+	List<FormFiveModel> findByProjectId(Long projectId);
 }

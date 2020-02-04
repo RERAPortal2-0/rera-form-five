@@ -45,7 +45,11 @@ public class Q10_1ServiceImpl implements Q10_1Service {
 		Optional.ofNullable(pModel)
 		.orElseThrow(() -> new ResourceNotFoundException("Form five id is not found"));
 		int row=2;
-	List<FormFiveQ10_1Model> loanDtlList =new ArrayList<FormFiveQ10_1Model>();
+		if(depositDtlExl.getPhysicalNumberOfRows()==1)
+		{
+			throw new ResourceNotFoundException("Empty excel file can not be uploaded");
+		}
+	List<FormFiveQ10_1Model> loanDtlList =new ArrayList<>();
 		for (int i=1;i<depositDtlExl.getPhysicalNumberOfRows();i++) {
 			FormFiveQ10_1Model model= new FormFiveQ10_1Model();
 			model.setLanderNameType(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));

@@ -1,6 +1,8 @@
 package in.gov.rera.form.five.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import in.gov.rera.form.five.dao.FormFiveDao;
 import in.gov.rera.form.five.model.FormFiveModel;
+import in.gov.rera.form.five.model.transaction.FormFiveDto;
 import in.gov.rera.form.five.services.FormFiveService;
 
 @Service
@@ -51,6 +54,53 @@ public class FormFiveServiceImpl implements FormFiveService {
 	@Override
 	public List<FormFiveModel> findAllFormFiveList() {
 		return (List<FormFiveModel>) formFiveDao.findAll();
+	}
+
+	@Override
+	public List<FormFiveModel> findFormFiveListbyFilter(FormFiveDto model) {
+		List<FormFiveModel> flterData = new ArrayList<>();
+		try {
+
+			String eSignedOn = "%";
+
+			if (!Optional.ofNullable(model.getFinancialYear()).isPresent()
+					|| "".contentEquals(model.getFinancialYear())) {
+				model.setFinancialYear("%");
+			}
+			model.setFinancialYear("2019-2020");
+			
+			if (!Optional.ofNullable(model.getStatus()).isPresent()
+					|| "".contentEquals(model.getStatus())) {
+				model.setStatus("%");
+			}
+			if (!Optional.ofNullable(model.getProjectName()).isPresent() || "".contentEquals(model.getProjectName())) {
+				model.setProjectName("%");
+			}
+			if (!Optional.ofNullable(model.getPromoterName()).isPresent() || "".contentEquals(model.getPromoterName())) {
+				model.setPromoterName("%");
+			}
+
+			
+
+			if (!Optional.ofNullable(model.geteSignedOn()).isPresent()) {
+				//model.seteSignedOn("%");
+			}
+
+			
+		
+			flterData = formFiveDao.getProjectWithFilters(model.getFinancialYear(),model.getStatus(), model.getProjectName(), model.getPromoterName());
+
+
+		} catch (Exception e) {
+
+		}
+
+		return flterData;
+	}
+
+	@Override
+	public List<FormFiveModel> findByProjectId(Long projectId) {
+		return formFiveDao.findByProjectId(projectId);
 	}
 	
 	

@@ -36,7 +36,11 @@ public class Q9_1ServiceImpl implements Q9_1Service {
 	@Override
 	public List<FormFiveQ9_1Model> validateReceivedAmtDtlExl(XSSFSheet depositDtlExl,Long formFiveId) throws ResourceNotFoundException, ParseException {
 	int row=2;
-	List<FormFiveQ9_1Model> depositDtlList =new ArrayList<FormFiveQ9_1Model>();
+	if(depositDtlExl.getPhysicalNumberOfRows()==1)
+	{
+		throw new ResourceNotFoundException("Empty excel file can not be uploaded");
+	}
+	List<FormFiveQ9_1Model> depositDtlList =new ArrayList<>();
 		for (int i=1;i<depositDtlExl.getPhysicalNumberOfRows();i++) {
 			FormFiveQ9_1Model model= new FormFiveQ9_1Model();
 			model.setUnitNumber(Util.isNumeric(Util.checkNullSpace(depositDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"),"SheetName: "+depositDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));

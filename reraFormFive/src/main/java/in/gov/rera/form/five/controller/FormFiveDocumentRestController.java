@@ -53,7 +53,6 @@ public class FormFiveDocumentRestController {
 		    FormFiveModel formFiveModel = formFiveService.findById(model.getFormFiveId());
 		    formFiveModel.setFormFiveDocModel(model);
 		    formFiveModel= formFiveService.saveFormFive(formFiveModel);
-		   // model = docService.saveDocument(formFiveModel.getFormFiveDocModel());
 		    model=dmsService.commitDoc(formFiveModel.getFormFiveDocModel(), env.getProperty("URL_CREATE_VDMS"));
 		    formFiveModel.getFormFiveDocModel().setBalanceSheetDocName("UPDATED");
 		    formFiveModel.setFormFiveDocModel(model);

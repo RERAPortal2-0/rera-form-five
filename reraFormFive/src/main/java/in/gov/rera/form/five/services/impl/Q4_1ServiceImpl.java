@@ -40,6 +40,11 @@ public class Q4_1ServiceImpl implements Q4_1Service {
 	    System.out.print("cert form date is "+pModel.getCertFromDate());
 	    System.out.print("cert to date is "+pModel.getCertToDate());
 		int row=2;
+		System.out.println("Excel physical number of rows is "+caDtlExl.getPhysicalNumberOfRows());
+		if(caDtlExl.getPhysicalNumberOfRows()==1)
+		{
+			throw new ResourceNotFoundException("Empty excel file can not be uploaded");
+		}
 	List<FormFiveQ4_1Model> caDtlList =new ArrayList<FormFiveQ4_1Model>();
 		for (int i=1;i<caDtlExl.getPhysicalNumberOfRows();i++) {
 		FormFiveQ4_1Model caModel= new FormFiveQ4_1Model();

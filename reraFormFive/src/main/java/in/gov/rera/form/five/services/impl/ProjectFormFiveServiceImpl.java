@@ -99,7 +99,6 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 					fModel.setPromoterName(project.getPromoterName());
 					  fModel.setCertFromDate("01-04-"+f.substring(0,4));
 					  fModel.setCertToDate("31-03-"+f.substring(5,9));
-					 
 					if (currentFYear.equals(f))
 						fModel.setFinancialYearStatus(ReraConstants.ACTIVE);
 					else {
@@ -108,6 +107,17 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 					fList.add(fModel);
 					i++;
 				}
+				FormFiveModel fQeModel = new FormFiveModel();
+				fQeModel.setFormFiveName("QE");
+				fQeModel.setFormFiveYear("2020");
+				fQeModel.setFinancialYear("2019-2020");
+				fQeModel.setProjectId(projectId);
+				fQeModel.setProjectName(project.getProjectDetailsModel().getProjectName());
+				fQeModel.setPromoterName(project.getPromoterName());
+				fQeModel.setCertFromDate("");
+				fQeModel.setCertToDate("");
+				fQeModel.setFinancialYearStatus(ReraConstants.INACTIVE);
+				fList.add(fQeModel);
 				model.setFormFiveList(fList);
 				model = saveProjectFormFive(model);
 				prjFormFiveModel = model;

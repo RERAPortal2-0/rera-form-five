@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import in.gov.rera.form.five.common.model.ResponseModel;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
 import in.gov.rera.form.five.model.FormFiveModel;
 import in.gov.rera.form.five.model.ProjectFormFiveModel;
+import in.gov.rera.form.five.model.transaction.FormFiveDto;
 import in.gov.rera.form.five.model.transaction.UserTransactionModel;
 import in.gov.rera.form.five.notification.MailContents;
 import in.gov.rera.form.five.notification.NotificationUtil;
@@ -43,212 +46,228 @@ public class FormFiveRestController {
 
 	@Autowired
 	FormFiveService formFiveService;
-	
+
 	@Autowired
 	ProjectFormFiveService projectformFiveService;
-	
+
 	@Autowired
 	Environment env;
-	
-	
+
 	/* @Autowired NotificationUtil notifcationServices; */
-	 
 
 	@GetMapping("/getFormFiveById{formFiveId}")
 	public ResponseEntity<?> getFormFiveDtlById(@PathVariable(value = "formFiveId") Long formFiveId)
 			throws ResourceNotFoundException, IOException, ParseException {
-		    logger.debug("called id is " + formFiveId);
-		    FormFiveModel  formFiveModel = formFiveService.findById(formFiveId);
-		    Optional.of(formFiveModel).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
-		    ResponseModel rs = new ResponseModel();
-			rs.setMessage("Records found.");
-			rs.setStatus("200");
-			rs.setData(formFiveModel);
+		logger.debug("called id is " + formFiveId);
+		FormFiveModel formFiveModel = formFiveService.findById(formFiveId);
+		Optional.of(formFiveModel).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(formFiveModel);
+		return ResponseEntity.ok().body(rs);
+	}
+
+	@GetMapping("/get-qe-dtl{projectId}")
+	public ResponseEntity<?> getQEFormFiveDtlByProjectId(@PathVariable(value = "projectId") Long projectId)
+			throws ResourceNotFoundException, IOException, ParseException {
+		List<FormFiveModel> formFiveList = formFiveService.findByProjectId(projectId);
+		Optional.of(formFiveList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
+		FormFiveModel formFiveModel = new FormFiveModel();
+		for(FormFiveModel model:formFiveList)
+		{
+		  if("QE".equals(model.getFormFiveName()))
+		  {
+			  formFiveModel=model;
+		  }
+		}
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(formFiveModel);
 		return ResponseEntity.ok().body(rs);
 	}
 	
 	@GetMapping("/esigned-form-five-list/{financialYear}")
 	public ResponseEntity<?> getEsignedFormFiveList(@PathVariable(value = "financialYear") String financialYear)
 			throws ResourceNotFoundException, IOException, ParseException {
-		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
-		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
-		    for(FormFiveModel m:formFiveList)
-		    {
-		    	if("SUBMITTED".equals(m.getStatus()))
-		    	{
-		    		eSignedformFiveList.add(m);
-		    	}
-		    }
-		    ResponseModel rs = new ResponseModel();
-		    if(eSignedformFiveList.size()>0)
-		    {
-		    	rs.setMessage("Data found.");
-				rs.setStatus("200");
-				rs.setData(eSignedformFiveList);
-		    }
-		    else
-		    {
-		    	rs.setMessage("No data found");
-				rs.setStatus("404");
-				rs.setData("");
-		    }
+		List<FormFiveModel> eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel> formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		for (FormFiveModel m : formFiveList) {
+			if ("SUBMITTED".equals(m.getStatus())) {
+				eSignedformFiveList.add(m);
+			}
+		}
+		ResponseModel rs = new ResponseModel();
+		if (eSignedformFiveList.size() > 0) {
+			rs.setMessage("Data found.");
+			rs.setStatus("200");
+			rs.setData(eSignedformFiveList);
+		} else {
+			rs.setMessage("No data found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
 		return ResponseEntity.ok().body(rs);
 	}
-	
+
 	@GetMapping("/esigned-all-form-five-list")
-	public ResponseEntity<?> getEsignedAllFormFiveList()
-			throws ResourceNotFoundException, IOException, ParseException {
-		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
-		List<FormFiveModel>  formFiveList = formFiveService.findAllFormFiveList();
-		    for(FormFiveModel m:formFiveList)
-		    {
-		    	if("SUBMITTED".equals(m.getStatus()))
-		    	{
-		    		eSignedformFiveList.add(m);
-		    	}
-		    }
-		    ResponseModel rs = new ResponseModel();
-		    if(eSignedformFiveList.size()>0)
-		    {
-		    	rs.setMessage("Data found.");
-				rs.setStatus("200");
-				rs.setData(eSignedformFiveList);
-		    }
-		    else
-		    {
-		    	rs.setMessage("No data found");
-				rs.setStatus("404");
-				rs.setData("");
-		    }
+	public ResponseEntity<?> getEsignedAllFormFiveList() throws ResourceNotFoundException, IOException, ParseException {
+		List<FormFiveModel> eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel> formFiveList = formFiveService.findAllFormFiveList();
+		for (FormFiveModel m : formFiveList) {
+			if ("SUBMITTED".equals(m.getStatus())) {
+				eSignedformFiveList.add(m);
+			}
+		}
+		ResponseModel rs = new ResponseModel();
+		if (eSignedformFiveList.size() > 0) {
+			rs.setMessage("Data found.");
+			rs.setStatus("200");
+			rs.setData(eSignedformFiveList);
+		} else {
+			rs.setMessage("No data found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
 		return ResponseEntity.ok().body(rs);
 	}
-	
+
 	@GetMapping("/pending-form-five-list/{financialYear}")
 	public ResponseEntity<?> getPendingFormFiveList(@PathVariable(value = "financialYear") String financialYear)
 			throws ResourceNotFoundException, IOException, ParseException {
-		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
-		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
-		    for(FormFiveModel m:formFiveList)
-		    {
-		    	if("SUBMITTED".equals(m.getStatus()) && "ACTIVE".equals(m.getFinancialYearStatus()))
-		    	{
-		    		eSignedformFiveList.add(m);
-		    	}
-		    }
-		    ResponseModel rs = new ResponseModel();
-		    if(eSignedformFiveList.size()>0)
-		    {
-		    	rs.setMessage("Data found.");
-				rs.setStatus("200");
-				rs.setData(eSignedformFiveList);
-		    }
-		    else
-		    {
-		    	rs.setMessage("No data found");
-				rs.setStatus("404");
-				rs.setData("");
-		    }
+		List<FormFiveModel> eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel> formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		for (FormFiveModel m : formFiveList) {
+			if ("SUBMITTED".equals(m.getStatus()) && "ACTIVE".equals(m.getFinancialYearStatus())) {
+				eSignedformFiveList.add(m);
+			}
+		}
+		ResponseModel rs = new ResponseModel();
+		if (eSignedformFiveList.size() > 0) {
+			rs.setMessage("Data found.");
+			rs.setStatus("200");
+			rs.setData(eSignedformFiveList);
+		} else {
+			rs.setMessage("No data found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
 		return ResponseEntity.ok().body(rs);
 	}
-	
+
 	@GetMapping("/defaulter-form-five-list/{financialYear}")
 	public ResponseEntity<?> getDefaulterFormFiveList(@PathVariable(value = "financialYear") String financialYear)
 			throws ResourceNotFoundException, IOException, ParseException {
-		List<FormFiveModel>  eSignedformFiveList = new ArrayList<FormFiveModel>();
-		List<FormFiveModel>  formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
-		    for(FormFiveModel m:formFiveList)
-		    {
-		    	if(!"SUBMITTED".equals(m.getStatus()) && "INACTIVE".equals(m.getFinancialYearStatus()))
-		    	{
-		    		eSignedformFiveList.add(m);
-		    	}
-		    }
-		    ResponseModel rs = new ResponseModel();
-		    if(eSignedformFiveList.size()>0)
-		    {
-		    	rs.setMessage("Data found.");
-				rs.setStatus("200");
-				rs.setData(eSignedformFiveList);
-		    }
-		    else
-		    {
-		    	rs.setMessage("No data found");
-				rs.setStatus("404");
-				rs.setData("");
-		    }
+		List<FormFiveModel> eSignedformFiveList = new ArrayList<FormFiveModel>();
+		List<FormFiveModel> formFiveList = formFiveService.findFormFiveListbyFinancialYear(financialYear);
+		for (FormFiveModel m : formFiveList) {
+			if (!"SUBMITTED".equals(m.getStatus()) && "INACTIVE".equals(m.getFinancialYearStatus())) {
+				eSignedformFiveList.add(m);
+			}
+		}
+		ResponseModel rs = new ResponseModel();
+		if (eSignedformFiveList.size() > 0) {
+			rs.setMessage("Data found.");
+			rs.setStatus("200");
+			rs.setData(eSignedformFiveList);
+		} else {
+			rs.setMessage("No data found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
 		return ResponseEntity.ok().body(rs);
 	}
-	
-	
+
 	@GetMapping("/getFormFiveListByCaNo{caNumber}")
 	public ResponseEntity<?> getFormFiveListByCaNo(@PathVariable(value = "caNumber") String caNumber)
 			throws ResourceNotFoundException, IOException, ParseException {
-		    ProjectFormFiveModel pModel= new ProjectFormFiveModel();
-		    List<FormFiveModel> formFiveList = formFiveService.findByCaNumber(caNumber);
-		    List<UserTransactionModel> assignedFFiveList= new ArrayList<UserTransactionModel>();
-		    for(FormFiveModel fModel:formFiveList)
-		    {
-		       UserTransactionModel model= new UserTransactionModel();
-		       if(!"REJECTED".equals(fModel.getStatus())) {
-		       model.setCaNo(fModel.getCaNumber());
-		       model.setCertFromDate(fModel.getCertFromDate());
-		       model.setCertToDate(fModel.getCertToDate());
-		       model.setFormFiveId(fModel.getFormFiveId());
-		       model.setFormFiveStatus(fModel.getStatus());
-		       model.setProjectName(fModel.getProjectName());
-		       model.setPromoterName(fModel.getPromoterName());
-		       assignedFFiveList.add(model);
-		       }
-		    }
-		    Optional.of(assignedFFiveList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
-		    ResponseModel rs = new ResponseModel();
-			rs.setMessage("Records found.");
-			rs.setStatus("200");
-			rs.setData(assignedFFiveList);
+		ProjectFormFiveModel pModel = new ProjectFormFiveModel();
+		List<FormFiveModel> formFiveList = formFiveService.findByCaNumber(caNumber);
+		List<UserTransactionModel> assignedFFiveList = new ArrayList<UserTransactionModel>();
+		for (FormFiveModel fModel : formFiveList) {
+			UserTransactionModel model = new UserTransactionModel();
+			if (!"REJECTED".equals(fModel.getStatus())) {
+				model.setCaNo(fModel.getCaNumber());
+				model.setCertFromDate(fModel.getCertFromDate());
+				model.setCertToDate(fModel.getCertToDate());
+				model.setFormFiveId(fModel.getFormFiveId());
+				model.setFormFiveStatus(fModel.getStatus());
+				model.setProjectName(fModel.getProjectName());
+				model.setPromoterName(fModel.getPromoterName());
+				assignedFFiveList.add(model);
+			}
+		}
+		Optional.of(assignedFFiveList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(assignedFFiveList);
 		return ResponseEntity.ok().body(rs);
 	}
-	
-	
+
 	@PostMapping("/updateFormFive")
-	public ResponseEntity<?> updateFormFive(@RequestBody FormFiveModel formFiveModel) throws ResourceNotFoundException{
-		    Optional.ofNullable(formFiveModel)
-						.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
-		    formFiveModel = formFiveService.updateFormFive(formFiveModel);
-		    ResponseModel rs = new ResponseModel();
-			rs.setMessage("Records found.");
-			rs.setStatus("200");
-			rs.setData(formFiveModel);
+	public ResponseEntity<?> updateFormFive(@RequestBody FormFiveModel formFiveModel) throws ResourceNotFoundException {
+		Optional.ofNullable(formFiveModel)
+				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
+		formFiveModel = formFiveService.updateFormFive(formFiveModel);
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(formFiveModel);
 		return ResponseEntity.ok().body(rs);
 	}
-	
+
 	@PostMapping("/update-statusById/{id}/{status}")
-	public ResponseEntity<?> formOneUpdateStatusById(
-			@PathVariable(value="id") Long id,
-			@PathVariable(value="status") String status) throws ResourceNotFoundException {
-        logger.info("call FormFiveRestController.formFiveUpdateStatusById(),<STATUS>");
-        Optional.ofNullable(id) 
-				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
-        FormFiveModel formFive = formFiveService.findById(id);
-        Optional.ofNullable(formFive).orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
-        formFive.setStatus(status);
-        if(formFive.getStatus().equalsIgnoreCase("ACCEPTED"))
-        {
-        	formFive.setAcceptedOn(Calendar.getInstance());
-        }
-        formFive= formFiveService.saveFormFive(formFive);
-        if(formFive.getStatus().equalsIgnoreCase("ACCEPTED")){
-          //notifcationServices.sendEmail( MailContents.acceptanceMailToPromoter(formFive));
-		  //notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
-		  
-		  //notifcationServices.sendSms(SmsContents.acceptanceSmsToPromoter(formFive)); 
-		 
-		  //notifcationServices.sendSms(SmsContents.acceptanceSmsToCA(formFive));
-        }
-        ResponseModel response = new ResponseModel();
-        response.setStatus(env.getProperty("SUCCESS"));
-        response.setMessage("Form Five Status Updated");
-        response.setData(formFive);
-        logger.info("call FormOneRestController.formOneUpdateStatusById() , <END>");
-	return ResponseEntity.ok().body(response);
-   }
+	public ResponseEntity<?> formOneUpdateStatusById(@PathVariable(value = "id") Long id,
+			@PathVariable(value = "status") String status) throws ResourceNotFoundException {
+		logger.info("call FormFiveRestController.formFiveUpdateStatusById(),<STATUS>");
+		Optional.ofNullable(id).orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
+		FormFiveModel formFive = formFiveService.findById(id);
+		Optional.ofNullable(formFive).orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
+		formFive.setStatus(status);
+		if (formFive.getStatus().equalsIgnoreCase("ACCEPTED")) {
+			formFive.setAcceptedOn(Calendar.getInstance());
+		}
+		formFive = formFiveService.saveFormFive(formFive);
+		if (formFive.getStatus().equalsIgnoreCase("ACCEPTED")) {
+			// notifcationServices.sendEmail(
+			// MailContents.acceptanceMailToPromoter(formFive));
+			// notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
+
+			// notifcationServices.sendSms(SmsContents.acceptanceSmsToPromoter(formFive));
+
+			// notifcationServices.sendSms(SmsContents.acceptanceSmsToCA(formFive));
+		}
+		ResponseModel response = new ResponseModel();
+		response.setStatus(env.getProperty("SUCCESS"));
+		response.setMessage("Form Five Status Updated");
+		response.setData(formFive);
+		logger.info("call FormOneRestController.formOneUpdateStatusById() , <END>");
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PostMapping("/all-form-five-list")
+	public ResponseEntity<ResponseModel> getAllFormFiveList(@RequestBody FormFiveDto formFiveModel) {
+		List<FormFiveModel> formFiveList = null;
+		Optional<FormFiveDto> op = Optional.ofNullable(formFiveModel);
+		if (op.isPresent()) {
+			formFiveList = formFiveService.findFormFiveListbyFilter(formFiveModel);
+		} else {
+			throw new ResourceAccessException("no data found");
+		}
+
+		ResponseModel rs = new ResponseModel();
+		if (!formFiveList.isEmpty()) {
+			rs.setMessage("Data found.");
+			rs.setStatus("200");
+			rs.setData(formFiveList);
+		} else {
+			rs.setMessage("No data found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
+		return ResponseEntity.ok().body(rs);
+	}
+
 }
