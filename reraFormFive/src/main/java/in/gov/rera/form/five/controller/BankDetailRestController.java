@@ -69,13 +69,25 @@ public class BankDetailRestController {
 		return ResponseEntity.ok().body(rs);
 	}
 	
+	@GetMapping("/get-all-bank")
+	public ResponseEntity<?> getAllBankDtl()
+			throws ResourceNotFoundException, IOException, ParseException {
+		    List<FormFiveBankDetailsModel> banklList = bankService.findAllBank();
+		    Optional.of(banklList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
+		    ResponseModel rs = new ResponseModel();
+			rs.setMessage(env.getProperty("RECORD_FOUND"));
+			rs.setStatus("200");
+			rs.setData(banklList);
+		return ResponseEntity.ok().body(rs);
+	}
+	
 	@PostMapping("/saveFormFiveBankDtl")
 	public ResponseEntity<?> saveBankDtl(@RequestBody FormFiveBankDetailsModel bankModel) throws ResourceNotFoundException{
 		    Optional.ofNullable(bankModel)
 						.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
 		    bankModel = bankService.saveBankDtl(bankModel);
 		    ResponseModel rs = new ResponseModel();
-			rs.setMessage(env.getProperty("RECORD_FOUND"));
+			rs.setMessage(env.getProperty("Data Submitted Successfully"));
 			rs.setStatus("200");
 			rs.setData(bankModel);
 		return ResponseEntity.ok().body(rs);

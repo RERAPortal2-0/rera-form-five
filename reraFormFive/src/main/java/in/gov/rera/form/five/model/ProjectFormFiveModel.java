@@ -45,6 +45,17 @@ public class ProjectFormFiveModel implements Serializable{
 	@Column(name="PROMOTER_EMAIL_ID")
 	private String promoterEmailId;
 	
+	@Column(name="PROJECT_REG_NO")
+	private String projectRegNo;
+	
+	public String getProjectRegNo() {
+		return projectRegNo;
+	}
+
+	public void setProjectRegNo(String projectRegNo) {
+		this.projectRegNo = projectRegNo;
+	}
+
 	public String getPromoterEmailId() {
 		return promoterEmailId;
 	}

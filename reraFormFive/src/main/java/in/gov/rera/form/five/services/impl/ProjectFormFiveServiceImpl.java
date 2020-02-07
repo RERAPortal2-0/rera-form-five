@@ -60,6 +60,7 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 				model.setPromoterEmailId(project.getPromoteremailId());
 				model.setPromoterMobileNo(project.getPromoterMobileNo());
 				model.setProjectName(project.getProjectDetailsModel().getProjectName());
+				model.setProjectRegNo(model.getProjectRegNo());
 				Calendar startDate = Calendar.getInstance();
 				Calendar endDate = Calendar.getInstance();
 				String currentFYear="";
@@ -97,6 +98,7 @@ public class ProjectFormFiveServiceImpl implements ProjectFormFiveService {
 					fModel.setProjectId(projectId);
 					fModel.setProjectName(project.getProjectDetailsModel().getProjectName());
 					fModel.setPromoterName(project.getPromoterName());
+					fModel.setProjectRegNo(project.getProjRegNo());
 					  fModel.setCertFromDate("01-04-"+f.substring(0,4));
 					  fModel.setCertToDate("31-03-"+f.substring(5,9));
 					if (currentFYear.equals(f))

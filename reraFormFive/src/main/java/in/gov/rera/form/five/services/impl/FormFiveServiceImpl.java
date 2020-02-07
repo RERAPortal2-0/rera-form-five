@@ -63,11 +63,16 @@ public class FormFiveServiceImpl implements FormFiveService {
 
 			String eSignedOn = "%";
 
+			if (!Optional.ofNullable(model.getProjectRegNo()).isPresent()
+					|| "".contentEquals(model.getProjectRegNo())) {
+				model.setProjectRegNo("%");
+			}
+			
 			if (!Optional.ofNullable(model.getFinancialYear()).isPresent()
 					|| "".contentEquals(model.getFinancialYear())) {
 				model.setFinancialYear("%");
 			}
-			model.setFinancialYear("2019-2020");
+			//model.setFinancialYear("2019-2020");
 			
 			if (!Optional.ofNullable(model.getStatus()).isPresent()
 					|| "".contentEquals(model.getStatus())) {
@@ -88,7 +93,7 @@ public class FormFiveServiceImpl implements FormFiveService {
 
 			
 		
-			flterData = formFiveDao.getProjectWithFilters(model.getFinancialYear(),model.getStatus(), model.getProjectName(), model.getPromoterName());
+			flterData = formFiveDao.getProjectWithFilters(model.getFinancialYear(),model.getStatus(), model.getProjectName(), model.getPromoterName(),model.getProjectRegNo());
 
 
 		} catch (Exception e) {

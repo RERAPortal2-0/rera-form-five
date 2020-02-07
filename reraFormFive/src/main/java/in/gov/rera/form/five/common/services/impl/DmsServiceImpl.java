@@ -1,5 +1,7 @@
 package in.gov.rera.form.five.common.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -7,6 +9,9 @@ import in.gov.rera.form.five.common.model.DmsModel;
 import in.gov.rera.form.five.common.services.DmsServices;
 import in.gov.rera.form.five.model.FormFiveDocumentModel;
 import in.gov.rera.form.five.model.FormFiveOtherDocModel;
+import in.gov.rera.form.five.model.SeminarBannerModel;
+import in.gov.rera.form.five.model.SeminarModel;
+import in.gov.rera.form.five.model.SpeakerDetailsModel;
 
 @Service
 public class DmsServiceImpl implements DmsServices {
@@ -26,7 +31,6 @@ public class DmsServiceImpl implements DmsServices {
 				model.setDocUId(comitPandoc.getUid());
 				model.setDocId(comitPandoc.getDocumentId());
 			}
-
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -72,4 +76,70 @@ public class DmsServiceImpl implements DmsServices {
 		}
 		return model;
 	}
+
+	@Override
+	public SeminarModel commitSeminarDoc(SeminarModel model,String url) {
+		DmsModel dmsModel = new DmsModel();
+		try {
+			if (model.getSupportedByUId() == null && model.getSupportedById() != null) {
+				dmsModel.setFolderId(model.getSeminarId().toString());
+				dmsModel.setDocumentId(model.getSupportedById());
+				dmsModel.setDocumentType("AUTH-SEMINAR-DOC");
+				DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+				Optional.ofNullable(comitPandoc)
+						.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+				model.setSupportedByUId(comitPandoc.getUid());
+				model.setSupportedById(comitPandoc.getDocumentId());
+			}
+			
+			if (model.getSponsorsUId() == null && model.getSponsorsId() != null) {
+				dmsModel.setFolderId(model.getSeminarId().toString());
+				dmsModel.setDocumentId(model.getSponsorsId());
+				dmsModel.setDocumentType("AUTH-SEMINAR-DOC");
+				DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+				Optional.ofNullable(comitPandoc)
+						.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+				model.setSponsorsUId(comitPandoc.getUid());
+				model.setSponsorsId(comitPandoc.getDocumentId());
+			}
+			
+			List<SeminarBannerModel> bannerList = new ArrayList<>();
+			for (SeminarBannerModel m : model.getSeminarBanner()) {
+				if (m.getBannerImageUId() == null && m.getBannerImageId() != null) {
+					dmsModel.setFolderId(m.getId().toString());
+					dmsModel.setDocumentId(m.getBannerImageId());
+					dmsModel.setDocumentType("AUTH-SEMINAR-BANNER-DOC");
+					DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+					Optional.ofNullable(comitPandoc)
+							.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+					m.setBannerImageUId(comitPandoc.getUid());
+					m.setBannerImageId(comitPandoc.getDocumentId());
+				}
+				bannerList.add(m);
+			}
+			model.setSeminarBanner(bannerList);
+			 
+			List<SpeakerDetailsModel> speakerList = new ArrayList<>();
+			for (SpeakerDetailsModel m : model.getSpeakerDetails()) {
+				if (m.getSpeakerImageUId() == null && m.getSpeakerImageId() != null) {
+					dmsModel.setFolderId(m.getId().toString());
+					dmsModel.setDocumentId(m.getSpeakerImageId());
+					dmsModel.setDocumentType("AUTH-SEMINAR-SPEAKER-DOC");
+					DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+					Optional.ofNullable(comitPandoc)
+							.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+					m.setSpeakerImageUId(comitPandoc.getUid());
+					m.setSpeakerImageId(comitPandoc.getDocumentId());
+				}
+				speakerList.add(m);
+			}
+			model.setSpeakerDetails(speakerList);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return model;
+	}
+	
+	
+	
 }

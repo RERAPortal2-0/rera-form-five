@@ -28,13 +28,6 @@ public class FormFiveQ4_1Model{
 	@Column(name = "DATE_OF_CERTIFICATE")
 	private String  dateCertificate;
 	
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="QUARTER_ID") private UserQuarterDetailsModel
-	 * userQuarterModel;
-	 */
-	
 	public String getDateCertificate() {
 		return dateCertificate;
 	}

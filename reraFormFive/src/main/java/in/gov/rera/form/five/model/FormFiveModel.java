@@ -37,6 +37,50 @@ public class FormFiveModel implements Serializable {
 	@Column(name="PROJECT_FINANCIAL_YEAR")
 	private String financialYear;
 	
+	@Column(name="PROJECT_REG_NO")
+	private String projectRegNo;
+	
+	@Column(name="PROMOTER_STATUS")
+	private String promoterStatus;
+	
+	@Column(name="AUTHORITY_REMARK")
+	private String authorityRemark;
+	
+	@Column(name="AUTHORITY_STATUS")
+	private String authorityStatus;
+	
+	public String getPromoterStatus() {
+		return promoterStatus;
+	}
+
+	public void setPromoterStatus(String promoterStatus) {
+		this.promoterStatus = promoterStatus;
+	}
+
+	public String getAuthorityRemark() {
+		return authorityRemark;
+	}
+
+	public void setAuthorityRemark(String authorityRemark) {
+		this.authorityRemark = authorityRemark;
+	}
+
+	public String getAuthorityStatus() {
+		return authorityStatus;
+	}
+
+	public void setAuthorityStatus(String authorityStatus) {
+		this.authorityStatus = authorityStatus;
+	}
+
+	public String getProjectRegNo() {
+		return projectRegNo;
+	}
+
+	public void setProjectRegNo(String projectRegNo) {
+		this.projectRegNo = projectRegNo;
+	}
+
 	public String getFinancialYearStatus() {
 		return financialYearStatus;
 	}
@@ -72,6 +116,10 @@ public class FormFiveModel implements Serializable {
 	@JoinColumn(name = "FORM_FIVE_FK")
 	private List<FormFiveBankDetailsModel> formFiveBankList;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "FORM_FIVE_LOG_FK")
+	private List<FormFiveLogModel> formFiveLogList;
+	
 	@Column(name = "Q_3", length = 15)
 	private String question_3;
 
@@ -839,6 +887,14 @@ public class FormFiveModel implements Serializable {
 
 	public void setAcceptedOn(Calendar acceptedOn) {
 		this.acceptedOn = acceptedOn;
+	}
+
+	public List<FormFiveLogModel> getFormFiveLogList() {
+		return formFiveLogList;
+	}
+
+	public void setFormFiveLogList(List<FormFiveLogModel> formFiveLogList) {
+		this.formFiveLogList = formFiveLogList;
 	}
 
 

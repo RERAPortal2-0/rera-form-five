@@ -15,4 +15,6 @@ public interface BankDetaillService {
 	FormFiveBankDetailsModel saveBankDtl(FormFiveBankDetailsModel bankModel);
 
 	void deleteBankDetail(Long bankId);
+
+	List<FormFiveBankDetailsModel> findAllBank();
 }

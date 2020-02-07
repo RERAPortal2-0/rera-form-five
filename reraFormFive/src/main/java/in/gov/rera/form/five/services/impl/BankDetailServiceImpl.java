@@ -40,6 +40,11 @@ public class BankDetailServiceImpl implements BankDetaillService {
 		bankDao.deleteById(bankId);
 	}
 
+	@Override
+	public List<FormFiveBankDetailsModel> findAllBank() {
+		return (List<FormFiveBankDetailsModel>) bankDao.findAll();
+	}
+
 
 	
 	

@@ -3,6 +3,8 @@ package in.gov.rera.form.five.model.transaction;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.Column;
+
 public class FormFiveDto implements Serializable {
 
 	private static final long serialVersionUID = 1803590463071163237L;
@@ -93,6 +95,16 @@ public class FormFiveDto implements Serializable {
 	private String promoterName;
 
 	private Long projectId;
+
+	private String projectRegNo;
+	
+	public String getProjectRegNo() {
+		return projectRegNo;
+	}
+
+	public void setProjectRegNo(String projectRegNo) {
+		this.projectRegNo = projectRegNo;
+	}
 
 	public Long getFormFiveId() {
 		return formFiveId;
