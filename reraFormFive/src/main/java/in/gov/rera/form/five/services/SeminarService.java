@@ -3,6 +3,7 @@ package in.gov.rera.form.five.services;
 import java.util.List;
 
 import in.gov.rera.form.five.model.SeminarModel;
+import in.gov.rera.form.five.model.transaction.SeminarDto;
 
 
 public interface SeminarService {
@@ -18,6 +19,8 @@ public interface SeminarService {
 	List<SeminarModel> findPastSeminar();
 
 	List<SeminarModel> findUpCommingSeminar();
+
+	List<SeminarDto> getSeminarDto(List<SeminarModel> upList);
 	
 	
 

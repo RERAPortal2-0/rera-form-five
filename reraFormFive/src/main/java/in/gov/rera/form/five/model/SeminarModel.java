@@ -40,6 +40,7 @@ public class SeminarModel implements Serializable {
 	@Column(name = "EVENT_END_DATE")
 	private String eventEndDate;
 	
+	private String paymentFlag;
 
 	/*
 	 * @Column(name = "SPONSORS_ID") private Long sponsorsId;
@@ -103,6 +104,14 @@ public class SeminarModel implements Serializable {
 	@JoinColumn(name = "SEMINAR_ID_SPONSOR_FK")
 	private List<SponsorsDetailsModel> sponsorsIdList;
 	
+	public String getPaymentFlag() {
+		return paymentFlag;
+	}
+
+	public void setPaymentFlag(String paymentFlag) {
+		this.paymentFlag = paymentFlag;
+	}
+
 	public List<SponsorsDetailsModel> getSponsorsIdList() {
 		return sponsorsIdList;
 	}

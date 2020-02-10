@@ -83,28 +83,6 @@ public class DmsServiceImpl implements DmsServices {
 	public SeminarModel commitSeminarDoc(SeminarModel model,String url) {
 		DmsModel dmsModel = new DmsModel();
 		try {
-			/*
-			 * if (model.getSupportedByUId() == null && model.getSupportedById() != null) {
-			 * dmsModel.setFolderId(model.getSeminarId().toString());
-			 * dmsModel.setDocumentId(model.getSupportedById());
-			 * dmsModel.setDocumentType("AUTH-SEMINAR-DOC"); DmsModel comitPandoc =
-			 * UserRestTemplateServices.saveDoc(dmsModel, url);
-			 * Optional.ofNullable(comitPandoc) .orElseThrow(() -> new
-			 * ResourceAccessException("There are some issue in document commit."));
-			 * model.setSupportedByUId(comitPandoc.getUid());
-			 * model.setSupportedById(comitPandoc.getDocumentId()); }
-			 * 
-			 * if (model.getSponsorsUId() == null && model.getSponsorsId() != null) {
-			 * dmsModel.setFolderId(model.getSeminarId().toString());
-			 * dmsModel.setDocumentId(model.getSponsorsId());
-			 * dmsModel.setDocumentType("AUTH-SEMINAR-DOC"); DmsModel comitPandoc =
-			 * UserRestTemplateServices.saveDoc(dmsModel, url);
-			 * Optional.ofNullable(comitPandoc) .orElseThrow(() -> new
-			 * ResourceAccessException("There are some issue in document commit."));
-			 * model.setSponsorsUId(comitPandoc.getUid());
-			 * model.setSponsorsId(comitPandoc.getDocumentId()); }
-			 */
-			
 			List<SponsorsDetailsModel> sponList = new ArrayList<>();
 			for (SponsorsDetailsModel m : model.getSponsorsIdList()) {
 				if (m.getSponsorsUId() == null && m.getSponsorsId() != null) {

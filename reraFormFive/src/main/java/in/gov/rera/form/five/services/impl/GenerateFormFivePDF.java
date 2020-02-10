@@ -697,9 +697,7 @@ public class GenerateFormFivePDF {
 				table.addCell(createCell(q11.getDetlsOfDescrepanceForm(), fontQ6));
 				x++;
 			}
-
 			document.add(table);
-
 		}
 
 		addLineBreak();
@@ -750,20 +748,12 @@ public class GenerateFormFivePDF {
 		par = addPara(par, this.project.getPromoterName(), fontUL);
 		par = addPara(par, " .", font4);
 		document.add(par);
-
 		addLineBreak();
 		addLineBreak();
-
 		addPara("Place : " + caDtl.getOficeDistictName(), font4);
-		// addPara("Date : " +
-		// in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()),
-		// font4);
-
 		addPara("Date : " + in.gov.rera.form.five.common.DateUtil.getDateString(Calendar.getInstance()), font4);
-
 		addParaRT("For,", font4);
 		addLineBreak();
-
 		addParaRT("Name Of CA Firm: " + caFirmName, font4);
 		addParaRT("Firm Reg. No. : " + caFirmNo, font4);
 		addParaRT("Name of Signature :" + formFive.getCaName().toUpperCase(), font4);
@@ -771,7 +761,6 @@ public class GenerateFormFivePDF {
 		addParaRT("(Signature and Stamps/Seal of the Signatory CA)", font4);
 		addParaRT("Membership Number: " + formFive.getCaNumber(), font4);
 		addParaRT("UDI Number: " + formFive.getCaUdinNumber(), font4);
-
 		if (caDtl.getOfficeTalukaName() != null) {
 			addParaRT("Full Address: " + caDtl.getOfficeAddress() + ",\n" + caDtl.getOfficeTalukaName() + ","
 					+ caDtl.getOficeDistictName() + "," + caDtl.getOfficePinCode(), font4);

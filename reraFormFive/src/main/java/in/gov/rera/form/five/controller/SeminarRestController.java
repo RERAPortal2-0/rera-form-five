@@ -21,6 +21,8 @@ import in.gov.rera.form.five.common.model.ResponseModel;
 import in.gov.rera.form.five.common.services.DmsServices;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
 import in.gov.rera.form.five.model.SeminarModel;
+import in.gov.rera.form.five.model.SeminarPaymentDetailsModel;
+import in.gov.rera.form.five.model.transaction.SeminarDto;
 import in.gov.rera.form.five.services.SeminarService;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:message/common.properties")
@@ -53,10 +55,11 @@ public class SeminarRestController {
 	public ResponseEntity<ResponseModel> getAllSeminarList()
 			throws ResourceNotFoundException, IOException {
 		List<SeminarModel> list = semiService.findAll();
+		List<SeminarDto> dtoList = semiService.getSeminarDto(list);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Records found.");
 		rs.setStatus("200");
-		rs.setData(list);
+		rs.setData(dtoList);
 		return ResponseEntity.ok().body(rs);
 	}
 	
@@ -64,20 +67,43 @@ public class SeminarRestController {
 	@GetMapping("/get-past-seminar")
 	public ResponseEntity<ResponseModel> getAllPastSeminarList() throws ResourceNotFoundException, IOException {
 		List<SeminarModel> list = semiService.findPastSeminar();
+		List<SeminarDto> dtoList = semiService.getSeminarDto(list);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Records found.");
 		rs.setStatus("200");
-		rs.setData(list);
+		rs.setData(dtoList);
 		return ResponseEntity.ok().body(rs);
 	}
 	 
 	@GetMapping("/get-upcomming-seminar")
 	public ResponseEntity<ResponseModel> getAllCommingSeminarList() throws ResourceNotFoundException, IOException {
 		List<SeminarModel> list = semiService.findUpCommingSeminar();
+		List<SeminarModel> upList = new ArrayList<>();
+		for(SeminarModel model:list)
+		{
+			int flag=0;
+			for(SeminarPaymentDetailsModel m:model.getPaymentList())
+			{
+				if(m.getStatus()!=null)
+				{
+					flag=1;
+				}
+			}
+			if(flag==1)
+			{
+				model.setPaymentFlag("YES");
+			}
+			else
+			{
+				model.setPaymentFlag("NO");
+			}
+			upList.add(model);
+		}
+		List<SeminarDto> dtoList = semiService.getSeminarDto(upList);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Records found.");
 		rs.setStatus("200");
-		rs.setData(list);
+		rs.setData(dtoList);
 		return ResponseEntity.ok().body(rs);
 	}
 	

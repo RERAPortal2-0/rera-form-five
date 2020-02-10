@@ -52,12 +52,5 @@ public class FormFivePdfRestController {
 		    Optional.of(formFiveModel).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
 		   GenerateFormFivePDF util=new GenerateFormFivePDF(formFiveModel,projectRegId,env.getProperty("URL_PROJECT_REG"),env.getProperty("USER_REG_CA"),bt);
 		    util.generateFormFive(response);
-		/*
-		 * Document document = new Document(); PdfWriter
-		 * pw=PdfWriter.getInstance(document, response.getOutputStream());
-		 * document.open(); util.generateFormFive(document, formFiveModel);
-		 * document.close();
-		 */
-			//Document document = new Document();
 	}
 }

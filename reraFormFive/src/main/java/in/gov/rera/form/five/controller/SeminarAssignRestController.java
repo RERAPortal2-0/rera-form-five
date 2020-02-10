@@ -41,7 +41,7 @@ public class SeminarAssignRestController {
 	public ResponseEntity<ResponseModel> getSeminarDetailsById(HttpServletRequest req)
 			throws ResourceNotFoundException, IOException {
 		AuthUser user = (AuthUser) req.getAttribute(AuthSecurity.AUTH_USER_ATTR);
-		List<SeminarAssignToModel> list = service.findByAssign(user.getDepartment());
+		List<SeminarAssignToModel> list = service.findByAssign(user.getUserType());
 		List<SeminarModel> seminarList = new ArrayList<>();
 		for(SeminarAssignToModel l:list)
 		{

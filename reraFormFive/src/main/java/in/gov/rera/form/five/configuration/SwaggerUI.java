@@ -28,5 +28,4 @@ public class SwaggerUI {
 	                    .required(true)
 	                    .build()));
 	}
-
 }
