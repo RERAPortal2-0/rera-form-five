@@ -14,6 +14,10 @@ public interface SeminarService {
 	List<SeminarModel> findAll();
 
 	void deleteById(Long id);
+
+	List<SeminarModel> findPastSeminar();
+
+	List<SeminarModel> findUpCommingSeminar();
 	
 	
 

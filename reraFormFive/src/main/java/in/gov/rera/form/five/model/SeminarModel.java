@@ -33,6 +33,13 @@ public class SeminarModel implements Serializable {
 
 	@Column(name = "ORGANISED_BY")
 	private String organisedBy;
+	
+	@Column(name = "EVENT_START_DATE")
+	private String eventStartDate;
+	
+	@Column(name = "EVENT_END_DATE")
+	private String eventEndDate;
+	
 
 	/*
 	 * @Column(name = "SPONSORS_ID") private Long sponsorsId;
@@ -222,6 +229,22 @@ public class SeminarModel implements Serializable {
 
 	public void setModifiedOn(java.util.Calendar modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	public String getEventStartDate() {
+		return eventStartDate;
+	}
+
+	public void setEventStartDate(String eventStartDate) {
+		this.eventStartDate = eventStartDate;
+	}
+
+	public String getEventEndDate() {
+		return eventEndDate;
+	}
+
+	public void setEventEndDate(String eventEndDate) {
+		this.eventEndDate = eventEndDate;
 	}
 
 }

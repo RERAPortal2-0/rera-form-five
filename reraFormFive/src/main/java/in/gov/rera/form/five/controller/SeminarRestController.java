@@ -60,15 +60,26 @@ public class SeminarRestController {
 		return ResponseEntity.ok().body(rs);
 	}
 	
-	/*
-	 * @GetMapping("/get-past-seminar") public ResponseEntity<ResponseModel>
-	 * getAllPastSeminarList() throws ResourceNotFoundException, IOException {
-	 * List<SeminarModel> list = semiService.findAll(); List<SeminarModel> pastlist
-	 * = new ArrayList<>(); Calendar cal = Calendar.getInstance();
-	 * System.out.println("today is ::::::::::"+cal); ResponseModel rs = new
-	 * ResponseModel(); rs.setMessage("Records found."); rs.setStatus("200");
-	 * rs.setData(list); return ResponseEntity.ok().body(rs); }
-	 */
+	
+	@GetMapping("/get-past-seminar")
+	public ResponseEntity<ResponseModel> getAllPastSeminarList() throws ResourceNotFoundException, IOException {
+		List<SeminarModel> list = semiService.findPastSeminar();
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(list);
+		return ResponseEntity.ok().body(rs);
+	}
+	 
+	@GetMapping("/get-upcomming-seminar")
+	public ResponseEntity<ResponseModel> getAllCommingSeminarList() throws ResourceNotFoundException, IOException {
+		List<SeminarModel> list = semiService.findUpCommingSeminar();
+		ResponseModel rs = new ResponseModel();
+		rs.setMessage("Records found.");
+		rs.setStatus("200");
+		rs.setData(list);
+		return ResponseEntity.ok().body(rs);
+	}
 	
 	@PostMapping("/save")
 	public ResponseEntity<ResponseModel> saveSeminar(@RequestBody SeminarModel model)

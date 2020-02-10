@@ -50,5 +50,15 @@ public class SeminarServiceImpl implements SeminarService {
 		semiDao.deleteById(id);
 	}
 
+	@Override
+	public List<SeminarModel> findPastSeminar() {
+		return semiDao.getPastSeminarList();
+	}
+
+	@Override
+	public List<SeminarModel> findUpCommingSeminar() {
+		return semiDao.getUpCommingSeminarList();
+	}
+
 	
 }
