@@ -61,7 +61,6 @@ public class FormFiveLogRestController {
 		return ResponseEntity.ok().body(rs);
 	}
 	
-	
 	@GetMapping("/get/{logId}")
 	public ResponseEntity<?> getLogDetailsById(@PathVariable(value = "logId") Long logId)
 			throws ResourceNotFoundException, IOException, ParseException {
@@ -73,8 +72,6 @@ public class FormFiveLogRestController {
 			rs.setData(logModel);
 		return ResponseEntity.ok().body(rs);
 	}
-	
-	
 	
 	@PostMapping("/save")
 	public ResponseEntity<?> saveLogDtl(@RequestBody FormFiveLogModel model, HttpServletRequest req) throws ResourceNotFoundException{
@@ -91,9 +88,4 @@ public class FormFiveLogRestController {
 			rs.setData(model);
 		return ResponseEntity.ok().body(rs);
 	}
-	
-	
-	
-	
-	
 }

@@ -47,7 +47,7 @@ public class SeminarServiceImpl implements SeminarService {
 
 	@Override
 	public void deleteById(Long id) {
-		
+		semiDao.deleteById(id);
 	}
 
 	

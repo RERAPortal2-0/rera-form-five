@@ -42,7 +42,6 @@ import in.gov.rera.form.five.services.Q7_1Service;
 public class Q7_1RestController {
 	private static final Logger logger = LogManager.getLogger(Q7_1RestController.class);
 
-	
 	@Autowired
 	Environment env;
 
@@ -51,7 +50,6 @@ public class Q7_1RestController {
 	
 	@Autowired
 	FormFiveService pServ;
-	
 	
 	@PostMapping("/validateWithdrawExldata")
 	public ResponseEntity<?> validateWithdrawExldata(@RequestParam("file") MultipartFile uploadedExcelFile,
@@ -65,13 +63,12 @@ public class Q7_1RestController {
 	} catch (Exception e) {
 		throw new ResourceNotFoundException("Please upload valid Excel File");
 	}
-		List<FormFiveQ7_1Model> depositedList= new ArrayList<FormFiveQ7_1Model>();
+		List<FormFiveQ7_1Model> depositedList= new ArrayList<>();
 		XSSFSheet deopsitedSheet = depositExl.getSheetAt(0);
 		if(!deopsitedSheet.getSheetName().equalsIgnoreCase("AMOUNT_EXCESS"))
 		{
 			throw new ResourceNotFoundException(env.getProperty("INVALID_EXCEL_MSG"));
 		}
-		//
 		depositedList = q7Service.validateWithdrawlDtlExl(deopsitedSheet,formFiveId);
 		Optional.ofNullable(uploadedExcelFile)
 						.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
@@ -89,12 +86,10 @@ public class Q7_1RestController {
 		Long formFiveId = 0L;
 		for (FormFiveQ7_1Model model : depositedList)
 			formFiveId = model.getFormFiveId();
-			System.out.println("form five id is " + formFiveId);
 			q7Service.removeAll(formFiveId);
 			FormFiveModel pModel = pServ.findById(formFiveId);
 			pModel.setProjectFormFiveQ7_1List(depositedList);
 			pModel=pServ.saveFormFive(pModel);
-			//depositedList = q7Service.saveWithdrawlsDtl(depositedList);
 		    ResponseModel rs = new ResponseModel();
 			rs.setMessage("Saved Successfully.");
 			rs.setStatus("200");
@@ -105,7 +100,6 @@ public class Q7_1RestController {
 	@GetMapping("/getWithdrawlsDtlByFormFiveId{formFiveId}")
 	public ResponseEntity<?> getWithdrawlsDtlByFormFiveId(@PathVariable(value = "formFiveId") Long formFiveId)
 			throws ResourceNotFoundException, IOException, ParseException {
-		    logger.debug("called id is " + formFiveId);
 		    List<FormFiveQ7_1Model>  depositedList = q7Service.findByFormFiveId(formFiveId);
 		    Optional.of(depositedList).orElseThrow(() -> new ResourceAccessException(env.getProperty("NOT_FOUND")));
 		    ResponseModel rs = new ResponseModel();

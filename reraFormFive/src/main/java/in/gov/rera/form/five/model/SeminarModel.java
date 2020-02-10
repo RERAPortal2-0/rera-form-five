@@ -34,17 +34,15 @@ public class SeminarModel implements Serializable {
 	@Column(name = "ORGANISED_BY")
 	private String organisedBy;
 
-	@Column(name = "SPONSORS_ID")
-	private Long sponsorsId;
-
-	@Column(name = "SPONSORS_UID")
-	private String sponsorsUId;
-
-	@Column(name = "SUPPORTED_BY_ID")
-	private Long supportedById;
-
-	@Column(name = "SUPPORTED_BY_UID")
-	private String supportedByUId;
+	/*
+	 * @Column(name = "SPONSORS_ID") private Long sponsorsId;
+	 * 
+	 * @Column(name = "SPONSORS_UID") private String sponsorsUId;
+	 * 
+	 * @Column(name = "SUPPORTED_BY_ID") private Long supportedById;
+	 * 
+	 * @Column(name = "SUPPORTED_BY_UID") private String supportedByUId;
+	 */
 
 	@Column(name = "DETAILS")
 	private String details;
@@ -89,6 +87,30 @@ public class SeminarModel implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "SEMINAR_ID_FEED_FK")
 	private List<SeminarFeedbackModel> feedbackList;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "SEMINAR_ID_SUPPORTED_FK")
+	private List<SupportedDetailsModel> supportedIdList;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "SEMINAR_ID_SPONSOR_FK")
+	private List<SponsorsDetailsModel> sponsorsIdList;
+	
+	public List<SponsorsDetailsModel> getSponsorsIdList() {
+		return sponsorsIdList;
+	}
+
+	public void setSponsorsIdList(List<SponsorsDetailsModel> sponsorsIdList) {
+		this.sponsorsIdList = sponsorsIdList;
+	}
+
+	public List<SupportedDetailsModel> getSupportedIdList() {
+		return supportedIdList;
+	}
+
+	public void setSupportedIdList(List<SupportedDetailsModel> supportedIdList) {
+		this.supportedIdList = supportedIdList;
+	}
 
 	public List<SeminarPaymentDetailsModel> getPaymentList() {
 		return paymentList;
@@ -160,38 +182,6 @@ public class SeminarModel implements Serializable {
 
 	public void setOrganisedBy(String organisedBy) {
 		this.organisedBy = organisedBy;
-	}
-
-	public Long getSponsorsId() {
-		return sponsorsId;
-	}
-
-	public void setSponsorsId(Long sponsorsId) {
-		this.sponsorsId = sponsorsId;
-	}
-
-	public String getSponsorsUId() {
-		return sponsorsUId;
-	}
-
-	public void setSponsorsUId(String sponsorsUId) {
-		this.sponsorsUId = sponsorsUId;
-	}
-
-	public Long getSupportedById() {
-		return supportedById;
-	}
-
-	public void setSupportedById(Long supportedById) {
-		this.supportedById = supportedById;
-	}
-
-	public String getSupportedByUId() {
-		return supportedByUId;
-	}
-
-	public void setSupportedByUId(String supportedByUId) {
-		this.supportedByUId = supportedByUId;
 	}
 
 	public String getDetails() {

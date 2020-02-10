@@ -34,11 +34,77 @@ public class SeminarDetailsModel {
 	  @Column(name = "SEMINAR_ADDRESS")
 	  private String seminarAddress;
 	  
+	  @Column(name = "SEMINAR_PIN_CODE")
+	  private String pincode;
+	  
+	  @Column(name = "STATE_NAME")
+	  private String stateName;
+	  
+	  @Column(name = "STATE_CODE")
+	  private String stateCode;
+	  
+	  @Column(name = "DISTRICT_NAME")
+	  private String districtName;
+	  
+	  @Column(name = "DISTRICT_CODE")
+	  private String districtCode;
+	  
+	  @Column(name = "TALUKA_NAME")
+	  private String talukaName;
+	  
 	  @Column(name = "GOOGLE_LAT")
 	  private String googleLat;
 	  
 	  @Column(name = "GOOGLE_LNG")
 	  private String googleLng;
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getStateCode() {
+		return stateCode;
+	}
+
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getDistrictCode() {
+		return districtCode;
+	}
+
+	public void setDistrictCode(String districtCode) {
+		this.districtCode = districtCode;
+	}
+
+	public String getTalukaName() {
+		return talukaName;
+	}
+
+	public void setTalukaName(String talukaName) {
+		this.talukaName = talukaName;
+	}
 
 	public Long getId() {
 		return Id;

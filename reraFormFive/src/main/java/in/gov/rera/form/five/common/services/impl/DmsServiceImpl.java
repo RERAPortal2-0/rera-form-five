@@ -12,6 +12,8 @@ import in.gov.rera.form.five.model.FormFiveOtherDocModel;
 import in.gov.rera.form.five.model.SeminarBannerModel;
 import in.gov.rera.form.five.model.SeminarModel;
 import in.gov.rera.form.five.model.SpeakerDetailsModel;
+import in.gov.rera.form.five.model.SponsorsDetailsModel;
+import in.gov.rera.form.five.model.SupportedDetailsModel;
 
 @Service
 public class DmsServiceImpl implements DmsServices {
@@ -81,27 +83,59 @@ public class DmsServiceImpl implements DmsServices {
 	public SeminarModel commitSeminarDoc(SeminarModel model,String url) {
 		DmsModel dmsModel = new DmsModel();
 		try {
-			if (model.getSupportedByUId() == null && model.getSupportedById() != null) {
-				dmsModel.setFolderId(model.getSeminarId().toString());
-				dmsModel.setDocumentId(model.getSupportedById());
-				dmsModel.setDocumentType("AUTH-SEMINAR-DOC");
-				DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
-				Optional.ofNullable(comitPandoc)
-						.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
-				model.setSupportedByUId(comitPandoc.getUid());
-				model.setSupportedById(comitPandoc.getDocumentId());
-			}
+			/*
+			 * if (model.getSupportedByUId() == null && model.getSupportedById() != null) {
+			 * dmsModel.setFolderId(model.getSeminarId().toString());
+			 * dmsModel.setDocumentId(model.getSupportedById());
+			 * dmsModel.setDocumentType("AUTH-SEMINAR-DOC"); DmsModel comitPandoc =
+			 * UserRestTemplateServices.saveDoc(dmsModel, url);
+			 * Optional.ofNullable(comitPandoc) .orElseThrow(() -> new
+			 * ResourceAccessException("There are some issue in document commit."));
+			 * model.setSupportedByUId(comitPandoc.getUid());
+			 * model.setSupportedById(comitPandoc.getDocumentId()); }
+			 * 
+			 * if (model.getSponsorsUId() == null && model.getSponsorsId() != null) {
+			 * dmsModel.setFolderId(model.getSeminarId().toString());
+			 * dmsModel.setDocumentId(model.getSponsorsId());
+			 * dmsModel.setDocumentType("AUTH-SEMINAR-DOC"); DmsModel comitPandoc =
+			 * UserRestTemplateServices.saveDoc(dmsModel, url);
+			 * Optional.ofNullable(comitPandoc) .orElseThrow(() -> new
+			 * ResourceAccessException("There are some issue in document commit."));
+			 * model.setSponsorsUId(comitPandoc.getUid());
+			 * model.setSponsorsId(comitPandoc.getDocumentId()); }
+			 */
 			
-			if (model.getSponsorsUId() == null && model.getSponsorsId() != null) {
-				dmsModel.setFolderId(model.getSeminarId().toString());
-				dmsModel.setDocumentId(model.getSponsorsId());
-				dmsModel.setDocumentType("AUTH-SEMINAR-DOC");
-				DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
-				Optional.ofNullable(comitPandoc)
-						.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
-				model.setSponsorsUId(comitPandoc.getUid());
-				model.setSponsorsId(comitPandoc.getDocumentId());
+			List<SponsorsDetailsModel> sponList = new ArrayList<>();
+			for (SponsorsDetailsModel m : model.getSponsorsIdList()) {
+				if (m.getSponsorsUId() == null && m.getSponsorsId() != null) {
+					dmsModel.setFolderId(m.getId().toString());
+					dmsModel.setDocumentId(m.getSponsorsId());
+					dmsModel.setDocumentType("AUTH-SEMINAR-SPONSOR-DOC");
+					DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+					Optional.ofNullable(comitPandoc)
+							.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+					m.setSponsorsUId(comitPandoc.getUid());
+					m.setSponsorsId(comitPandoc.getDocumentId());
+				}
+				sponList.add(m);
 			}
+			model.setSponsorsIdList(sponList);
+			
+			List<SupportedDetailsModel> supList = new ArrayList<>();
+			for (SupportedDetailsModel m : model.getSupportedIdList()) {
+				if (m.getSupportedByUId() == null && m.getSupportedById() != null) {
+					dmsModel.setFolderId(m.getId().toString());
+					dmsModel.setDocumentId(m.getSupportedById());
+					dmsModel.setDocumentType("AUTH-SEMINAR-SUPPORTED-DOC");
+					DmsModel comitPandoc = UserRestTemplateServices.saveDoc(dmsModel, url);
+					Optional.ofNullable(comitPandoc)
+							.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
+					m.setSupportedByUId(comitPandoc.getUid());
+					m.setSupportedById(comitPandoc.getDocumentId());
+				}
+				supList.add(m);
+			}
+			model.setSupportedIdList(supList);
 			
 			List<SeminarBannerModel> bannerList = new ArrayList<>();
 			for (SeminarBannerModel m : model.getSeminarBanner()) {
