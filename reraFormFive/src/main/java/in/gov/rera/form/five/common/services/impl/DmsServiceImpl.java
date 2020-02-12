@@ -94,6 +94,7 @@ public class DmsServiceImpl implements DmsServices {
 							.orElseThrow(() -> new ResourceAccessException("There are some issue in document commit."));
 					m.setSponsorsUId(comitPandoc.getUid());
 					m.setSponsorsId(comitPandoc.getDocumentId());
+					
 				}
 				sponList.add(m);
 			}

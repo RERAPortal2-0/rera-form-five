@@ -27,8 +27,19 @@ public class SponsorsDetailsModel {
 	  @Column(name = "SPONSOR_IMAGE_UID")
 	  private String sponsorsUId;
 	  
+	  @Column(name = "SPONSOR_IMAGE_NAME")
+	  private String fName;
+	  
 	  @Column(name = "NAME")
 	  private String sponsorsName;
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
 
 	public Long getId() {
 		return Id;

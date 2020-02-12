@@ -25,9 +25,20 @@ public class SeminarBannerModel {
 	  
 	  @Column(name = "BANNER_IMAGE_UID")
 	  private String bannerImageUId;
+	  
+	  @Column(name = "BANNER_IMAGE_NAME")
+	  private String fName;
 
 	public Long getId() {
 		return Id;
+	}
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
 	}
 
 	public void setId(Long id) {

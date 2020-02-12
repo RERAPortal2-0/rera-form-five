@@ -27,7 +27,18 @@ public class SupportedDetailsModel {
 	  @Column(name = "SUPPORTED_IMAGE_UID")
 	  private String supportedByUId;
 	  
-	  @Column(name = "NAME")
+	  @Column(name = "SUPPORTED_IMAGE_NAME")
+	  private String fName;
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	@Column(name = "NAME")
 	  private String supportedByName;
 
 	public String getSupportedByUId() {

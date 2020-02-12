@@ -30,7 +30,18 @@ public class SpeakerDetailsModel {
 	  @Column(name = "NAME")
 	  private String name;
 	  
-	  @Column(name = "DESIGNATION")
+	  @Column(name = "SPEAKER_IMAGE_NAME")
+	  private String fName;
+
+	public String getfName() {
+		return fName;
+	}
+
+	public void setfName(String fName) {
+		this.fName = fName;
+	}
+
+	@Column(name = "DESIGNATION")
 	  private String designation;
 
 	public Long getId() {

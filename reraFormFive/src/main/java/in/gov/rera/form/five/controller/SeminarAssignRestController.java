@@ -16,6 +16,7 @@ import in.gov.rera.form.five.common.model.ResponseModel;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
 import in.gov.rera.form.five.model.SeminarAssignToModel;
 import in.gov.rera.form.five.model.SeminarModel;
+import in.gov.rera.form.five.model.transaction.SeminarDto;
 import in.gov.rera.form.five.security.AuthSecurity;
 import in.gov.rera.form.five.security.AuthUser;
 import in.gov.rera.form.five.services.SeminarAssignedService;
@@ -43,16 +44,20 @@ public class SeminarAssignRestController {
 		AuthUser user = (AuthUser) req.getAttribute(AuthSecurity.AUTH_USER_ATTR);
 		List<SeminarAssignToModel> list = service.findByAssign(user.getUserType());
 		List<SeminarModel> seminarList = new ArrayList<>();
+		
 		for(SeminarAssignToModel l:list)
 		{
 			SeminarModel m = new SeminarModel();
+			if(null!=l.getSeminarId()) {
 			m = semiService.findById(l.getSeminarId());
 			seminarList.add(m);		
+			}
 		}
+		List<SeminarDto> dtoList = semiService.getSeminarDto(seminarList);
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Records found");
 		rs.setStatus("200");
-		rs.setData(seminarList);
+		rs.setData(dtoList);
 		return ResponseEntity.ok().body(rs);
 	}
 	 
