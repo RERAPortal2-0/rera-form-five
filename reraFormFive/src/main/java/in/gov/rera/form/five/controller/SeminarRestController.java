@@ -2,7 +2,6 @@ package in.gov.rera.form.five.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,73 @@ public class SeminarRestController {
 		rs.setData(model);
 		return ResponseEntity.ok().body(rs);
 	}
-	 
+	
+	@GetMapping("/get-reg-internal-user-list/{seminarId}")
+	public ResponseEntity<ResponseModel> getRegInternalUsersListById(@PathVariable(value = "seminarId") Long seminarId)
+			throws ResourceNotFoundException, IOException {
+		SeminarModel model = semiService.findById(seminarId);
+	    List<SeminarPaymentDetailsModel> internalList = new ArrayList<>();
+	    for(SeminarPaymentDetailsModel m:model.getPaymentList())
+	    {
+	    	if(null!= m.getUserType() && "SUCCESS".equals(m.getStatus()) && (m.getUserType().equals("TPJR")|| m.getUserType().equals("TPSR") || m.getUserType().equals("FIN")
+	    			|| m.getUserType().equals("LEGAL") || m.getUserType().equals("CHAIRMAN") || m.getUserType().equals("SECRETRY")
+	    			|| m.getUserType().equals("VERIFOFF") || m.getUserType().equals("MEMBERONE") || m.getUserType().equals("SECRETRYPA")
+	    			|| m.getUserType().equals("FINCONTROLLER") || m.getUserType().equals("INVESOFF") || m.getUserType().equals("LEGALOFF")
+	    			|| m.getUserType().equals("PROSOFF") || m.getUserType().equals("TPOFFICER") || m.getUserType().equals("LEGALOFFICER")
+	    			|| m.getUserType().equals("ENQOFFICER") || m.getUserType().equals("TICKETOFFICER")))
+	    	{
+	    		internalList.add(m);
+	    	}
+	    }
+		ResponseModel rs = new ResponseModel();
+		if(internalList.isEmpty())
+		{
+			rs.setMessage("Not Found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
+		else
+		{
+			rs.setMessage("Records found.");
+			rs.setStatus("200");
+			rs.setData(internalList);
+		}
+		return ResponseEntity.ok().body(rs);
+	}
+	
+	
+	@GetMapping("/get-reg-external-user-list/{seminarId}")
+	public ResponseEntity<ResponseModel> getRegExternalUsersListById(@PathVariable(value = "seminarId") Long seminarId)
+			throws ResourceNotFoundException, IOException {
+		SeminarModel model = semiService.findById(seminarId);
+	    List<SeminarPaymentDetailsModel> internalList = new ArrayList<>();
+	    for(SeminarPaymentDetailsModel m:model.getPaymentList())
+	    {
+	    	if(null!= m.getUserType() && "SUCCESS".equals(m.getStatus()) && (m.getUserType().equals("PROMOTER")|| m.getUserType().equals("AGENT") 
+	    			|| m.getUserType().equals("ARCHITECT")
+	    			|| m.getUserType().equals("CA_USER") || m.getUserType().equals("CITIZEN") || m.getUserType().equals("COMPANYSECRETARY")
+	    			|| m.getUserType().equals("CONTRACTOR") || m.getUserType().equals("COSTACCONTANT") || m.getUserType().equals("ENGINEER")
+	    			|| m.getUserType().equals("LAWYER")))
+	    	{
+	    		internalList.add(m);
+	    	}
+	    }
+		ResponseModel rs = new ResponseModel();
+		if(internalList.isEmpty())
+		{
+			rs.setMessage("Not Found");
+			rs.setStatus("404");
+			rs.setData("");
+		}
+		else
+		{
+			rs.setMessage("Records found.");
+			rs.setStatus("200");
+			rs.setData(internalList);
+		}
+		return ResponseEntity.ok().body(rs);
+	}
+	
 	@GetMapping("/get-all")
 	public ResponseEntity<ResponseModel> getAllSeminarList()
 			throws ResourceNotFoundException, IOException {
@@ -62,7 +127,6 @@ public class SeminarRestController {
 		rs.setData(dtoList);
 		return ResponseEntity.ok().body(rs);
 	}
-	
 	
 	@GetMapping("/get-past-seminar")
 	public ResponseEntity<ResponseModel> getAllPastSeminarList() throws ResourceNotFoundException, IOException {

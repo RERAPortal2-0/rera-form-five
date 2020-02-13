@@ -379,7 +379,6 @@ public class FormFiveModel implements Serializable {
 	private String promoterRemarks;
 
 	
-	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATED_ON", updatable=false)
@@ -867,6 +866,8 @@ public class FormFiveModel implements Serializable {
 		return getRafCount();
 	}
 
+	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "LAST_UPDATED_ON")
 	private Calendar lastUpdatedOn;
 

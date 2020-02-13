@@ -87,7 +87,7 @@ public class BankDetailRestController {
 						.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
 		    bankModel = bankService.saveBankDtl(bankModel);
 		    ResponseModel rs = new ResponseModel();
-			rs.setMessage(env.getProperty("Data Submitted Successfully"));
+			rs.setMessage("Data Submitted");
 			rs.setStatus("200");
 			rs.setData(bankModel);
 		return ResponseEntity.ok().body(rs);
