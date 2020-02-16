@@ -52,7 +52,7 @@ public class SeminarModel implements Serializable {
 	 * @Column(name = "SUPPORTED_BY_UID") private String supportedByUId;
 	 */
 
-	@Column(name = "DETAILS")
+	@Column(name = "DETAILS", length=2000)
 	private String details;
 
 	@Column(name = "CERTIFICATE_ISSUE")
