@@ -10,10 +10,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import in.gov.rera.form.five.common.RestTamplateUtility;
 import in.gov.rera.form.five.common.Util;
 import in.gov.rera.form.five.dao.FormFiveDao;
 import in.gov.rera.form.five.dao.Q4_1Dao;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
+import in.gov.rera.form.five.model.CAModel;
 import in.gov.rera.form.five.model.FormFiveModel;
 import in.gov.rera.form.five.model.FormFiveQ4_1Model;
 import in.gov.rera.form.five.services.FormFiveService;
@@ -36,22 +38,21 @@ public class Q4_1ServiceImpl implements Q4_1Service {
 		return q4_1Dao.findByFormFiveId(id);
 	}
 	@Override
-	public List<FormFiveQ4_1Model> validateCaDtlExl(XSSFSheet caDtlExl,FormFiveModel pModel) throws ResourceNotFoundException, ParseException {
-	    System.out.print("cert form date is "+pModel.getCertFromDate());
-	    System.out.print("cert to date is "+pModel.getCertToDate());
+	public List<FormFiveQ4_1Model> validateCaDtlExl(XSSFSheet caDtlExl,FormFiveModel pModel,String caUrl) throws ResourceNotFoundException, ParseException {
+
+	    
+	    
 		int row=2;
-		System.out.println("Excel physical number of rows is "+caDtlExl.getPhysicalNumberOfRows());
 		if(caDtlExl.getPhysicalNumberOfRows()==1)
 		{
 			throw new ResourceNotFoundException("Empty excel file can not be uploaded");
 		}
-	List<FormFiveQ4_1Model> caDtlList =new ArrayList<FormFiveQ4_1Model>();
+	List<FormFiveQ4_1Model> caDtlList =new ArrayList<>();
 		for (int i=1;i<caDtlExl.getPhysicalNumberOfRows();i++) {
 		FormFiveQ4_1Model caModel= new FormFiveQ4_1Model();
 		caModel.setCaName(Util.isCharacter(Util.checkNullSpace(caDtlExl.getRow(i).getCell(0).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 1"));
-		caModel.setCaNumber(Util.isCALength(Util.isNumeric(Util.checkNullSpace(caDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"));
+		caModel.setCaNumber(isCAExists(Util.isCALength(Util.isNumeric(Util.checkNullSpace(caDtlExl.getRow(i).getCell(1).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2"),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 2",caUrl));
 		caModel.setDateCertificate(Util.checkNullSpace(caDtlExl.getRow(i).getCell(2).toString(),"SheetName: "+caDtlExl.getSheetName() +" Row No :"+ row+" ,Cell No : 3"));
-		System.out.println("ca date certificate is   :::::::::  "+caDtlExl.getRow(i).getCell(2).toString());
 		caModel.setFormFiveId(pModel.getFormFiveId());
 		caDtlList.add(caModel);
 		row++;
@@ -59,7 +60,17 @@ public class Q4_1ServiceImpl implements Q4_1Service {
 		return caDtlList;
 	}
 
-	
+	public static String isCAExists(String caNumber, String msg,String caUrl)throws ResourceNotFoundException { 
+		
+		CAModel model = RestTamplateUtility.caDtl(caNumber,caUrl );
+		    if(null==model)
+		    	{
+		    	throw new  ResourceNotFoundException("CA Number not registered in "+ msg);
+		    	}
+		    else {
+		    	return caNumber;
+		    }
+		}
 	
 	@Override
 	public List<FormFiveQ4_1Model> saveCADtl(List<FormFiveQ4_1Model> caDtlList) {

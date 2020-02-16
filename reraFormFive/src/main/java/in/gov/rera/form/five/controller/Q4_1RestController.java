@@ -66,8 +66,8 @@ public class Q4_1RestController {
 		FormFiveModel pModel = new FormFiveModel();
 		pModel = pService.findById(formFiveId);
 		Optional.ofNullable(pModel)
-				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("FORM FIVE ID IS NOT FOUND")));
-		caDtlList = q4Service.validateCaDtlExl(caSheet, pModel);
+				.orElseThrow(() -> new ResourceNotFoundException("FORM FIVE ID IS NOT FOUND"));
+		caDtlList = q4Service.validateCaDtlExl(caSheet, pModel,env.getProperty("USER_REG_CA"));
 		Optional.ofNullable(uploadedExcelFile)
 				.orElseThrow(() -> new ResourceNotFoundException(env.getProperty("DATA_INVALID")));
 		ResponseModel rs = new ResponseModel();
