@@ -7,8 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import in.gov.rera.form.five.common.model.DmsModel;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
+import in.gov.rera.form.five.model.AuthUserModel;
 import in.gov.rera.form.five.model.CAModel;
 import in.gov.rera.form.five.model.ProjectRegistrationModel;
 
@@ -58,6 +58,14 @@ public class RestTamplateUtility {
 	 * public static void main(String[] args) throws ResourceNotFoundException {
 	 * System.out.println(projectDtl(1L, "http://15.206.175.42/project_reg/1")); }
 	 */
+
+	public static List<AuthUserModel> getUserListByType(String assign,String url) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<AuthUserModel> object = restTemplate.exchange(url + assign, HttpMethod.GET, null,
+				new ParameterizedTypeReference<AuthUserModel>() {
+				});
+		return (List<AuthUserModel>) object.getBody();
+	}
 	
 	/*
 	 * public static ProjectRegistrationModel projectDtlP(Long projectId,String url)

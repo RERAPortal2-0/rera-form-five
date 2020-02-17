@@ -263,5 +263,8 @@ public class ReraConstants {
 	public static final String SENT="SENT";
 	
 	public static final String SAVEASDRAFT="SAVEASDRAFT";
+	public static final String FORMFIVE="Form Five";
+
+	public static final String RERA_SEMINAR = "RERA Seminar";
 	
 }

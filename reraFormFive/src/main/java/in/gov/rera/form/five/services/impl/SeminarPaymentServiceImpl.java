@@ -9,6 +9,9 @@ import org.springframework.web.client.ResourceAccessException;
 import in.gov.rera.form.five.dao.SeminarPaymentDao;
 import in.gov.rera.form.five.model.SeminarPaymentDetailsModel;
 import in.gov.rera.form.five.model.transaction.PaymentTransactionModel;
+import in.gov.rera.form.five.notification.MailContents;
+import in.gov.rera.form.five.notification.NotificationUtil;
+import in.gov.rera.form.five.notification.SmsContents;
 import in.gov.rera.form.five.services.SeminarPaymentService;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:message/common.properties")
@@ -21,6 +24,10 @@ public class SeminarPaymentServiceImpl implements SeminarPaymentService {
 
 	@Autowired
 	PaymentTransactionModel paymentTransactionModel;
+	
+    @Autowired 
+    NotificationUtil 
+    notifcationServices;
 	
 	@Override
 	public SeminarPaymentDetailsModel findById(Long id) {
@@ -49,7 +56,6 @@ public class SeminarPaymentServiceImpl implements SeminarPaymentService {
 
 	@Override
 	public SeminarPaymentDetailsModel updatePaymentDetail(SeminarPaymentDetailsModel entity) {
-		//Optional<ProjectAlterationPaymentDetailsModel> op = dao.findById(entity.getPaymentId());
 		SeminarPaymentDetailsModel paymentModel = semiDao.findById(entity.getPaymentId()).get();
 			if (paymentModel!=null) {
 				if ("SUCCESS".contentEquals(entity.getStatus())) {
@@ -57,7 +63,17 @@ public class SeminarPaymentServiceImpl implements SeminarPaymentService {
 					paymentModel.setTokenNo(entity.getTokenNo());
 					paymentModel.setStatus(entity.getStatus());
 					paymentModel.setTransactionNo(entity.getTransactionNo());
-					//projectAppService.saveprojectAppByProject(updatedProject);
+					
+					try {
+						notifcationServices.sendEmail(MailContents.seminarRegistrationMail(paymentModel));
+						notifcationServices.sendSms(SmsContents.seminarRegistrationSms(paymentModel));
+					}
+					catch(Exception e)
+					{
+						System.out.println("Exception in Seminar Registration");
+					}
+					
+					
 				} else if ("BOOKED".contentEquals(entity.getStatus()) || "PENDING".equals(entity.getStatus())) {
 					paymentModel.setStatus(entity.getStatus());
 				} 

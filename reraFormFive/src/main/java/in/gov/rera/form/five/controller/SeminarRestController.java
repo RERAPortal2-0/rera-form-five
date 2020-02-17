@@ -16,12 +16,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import in.gov.rera.form.five.common.RestTamplateUtility;
 import in.gov.rera.form.five.common.model.ResponseModel;
 import in.gov.rera.form.five.common.services.DmsServices;
 import in.gov.rera.form.five.exception.ResourceNotFoundException;
+import in.gov.rera.form.five.model.AuthUserModel;
+import in.gov.rera.form.five.model.ProjectFormFiveModel;
+import in.gov.rera.form.five.model.SeminarAssignToModel;
 import in.gov.rera.form.five.model.SeminarModel;
 import in.gov.rera.form.five.model.SeminarPaymentDetailsModel;
 import in.gov.rera.form.five.model.transaction.SeminarDto;
+import in.gov.rera.form.five.notification.MailContents;
+import in.gov.rera.form.five.notification.NotificationUtil;
+import in.gov.rera.form.five.notification.SmsContents;
 import in.gov.rera.form.five.services.SeminarService;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:message/common.properties")
@@ -39,6 +47,10 @@ public class SeminarRestController {
     @Autowired
     Environment env;
 	 
+    @Autowired 
+    NotificationUtil 
+    notifcationServices;
+    
 	@GetMapping("/get-by-id{id}")
 	public ResponseEntity<ResponseModel> getSeminarDetailsById(@PathVariable(value = "id") Long id)
 			throws ResourceNotFoundException, IOException {
@@ -179,6 +191,23 @@ public class SeminarRestController {
 		model=semiService.saveSeminar(model); 
 		model = dmsServ.commitSeminarDoc(model,env.getProperty("URL_CREATE_VDMS"));
 		model = semiService.saveSeminar(model);
+		// Mail and SMS Integration
+		try {
+				for(SeminarAssignToModel m:model.getAssignTo()) {
+					List<AuthUserModel> userList = RestTamplateUtility.getUserListByType(m.getAssign(),env.getProperty("USER_DTL_BY_TYPE"));
+				    if(!userList.isEmpty()) {
+					for(AuthUserModel user:userList)
+					{
+						notifcationServices.sendEmail(MailContents.seminarAssignToMail(user,model));
+						notifcationServices.sendSms(SmsContents.seminarAssignToSms(user));
+					}
+				    }
+				}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in Seminar mail Service:::::::::");
+		}
 		ResponseModel rs = new ResponseModel();
 		rs.setMessage("Data submitted Successfully.");
 		rs.setStatus("200");

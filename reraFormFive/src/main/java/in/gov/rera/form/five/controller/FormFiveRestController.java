@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +51,9 @@ public class FormFiveRestController {
 	@Autowired
 	Environment env;
 
-	/* @Autowired NotificationUtil notifcationServices; */
+    @Autowired 
+    NotificationUtil 
+    notifcationServices; 
 
 	@GetMapping("/getFormFiveById{formFiveId}")
 	public ResponseEntity<?> getFormFiveDtlById(@PathVariable(value = "formFiveId") Long formFiveId)
@@ -230,14 +230,40 @@ public class FormFiveRestController {
 			formFive.setAcceptedOn(Calendar.getInstance());
 		}
 		formFive = formFiveService.saveFormFive(formFive);
+		try {
 		if (formFive.getStatus().equalsIgnoreCase("ACCEPTED")) {
-			// notifcationServices.sendEmail(
-			// MailContents.acceptanceMailToPromoter(formFive));
-			// notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
-
-			// notifcationServices.sendSms(SmsContents.acceptanceSmsToPromoter(formFive));
-
-			// notifcationServices.sendSms(SmsContents.acceptanceSmsToCA(formFive));
+			 ProjectFormFiveModel m = projectformFiveService.findByProjectId(formFive.getProjectId());	
+			 notifcationServices.sendEmail(MailContents.acceptanceMailToPromoter(m,formFive));
+			 notifcationServices.sendEmail(MailContents.acceptanceMailToCA(formFive));
+			 notifcationServices.sendSms(SmsContents.acceptanceSmsToPromoter(m));
+			 notifcationServices.sendSms(SmsContents.acceptanceSmsToCA(formFive));
+		}
+		
+			if (formFive.getStatus().equalsIgnoreCase("ASSIGNED")) {
+				 ProjectFormFiveModel m = projectformFiveService.findByProjectId(formFive.getProjectId());	
+				 notifcationServices.sendEmail(MailContents.assignMailToPromoter(m,formFive));
+				 notifcationServices.sendEmail(MailContents.assignMailToCA(formFive));
+				 notifcationServices.sendSms(SmsContents.assignSmsToPromoter(m));
+				 notifcationServices.sendSms(SmsContents.assignSmsToCA(formFive));
+			}
+			if (formFive.getStatus().equalsIgnoreCase("SUBMITTED")) {
+				 ProjectFormFiveModel m = projectformFiveService.findByProjectId(formFive.getProjectId());	
+				 notifcationServices.sendEmail(MailContents.submitMailToPromoter(m,formFive));
+				 notifcationServices.sendEmail(MailContents.submitMailToCA(formFive));
+				 notifcationServices.sendSms(SmsContents.submitSmsToPromoter(m));
+				 notifcationServices.sendSms(SmsContents.submitSmsToCA(formFive));
+			}
+			if (formFive.getStatus().equalsIgnoreCase("REASSIGN")) {
+				 ProjectFormFiveModel m = projectformFiveService.findByProjectId(formFive.getProjectId());	
+				 notifcationServices.sendEmail(MailContents.reAssignMailToPromoter(m,formFive));
+				 notifcationServices.sendEmail(MailContents.reAssignMailToCA(formFive));
+				 notifcationServices.sendSms(SmsContents.reAssignSmsToPromoter(m));
+				 notifcationServices.sendSms(SmsContents.reAssignSmsToCA(formFive));
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Exception in Form Five Mail");
 		}
 		ResponseModel response = new ResponseModel();
 		response.setStatus(env.getProperty("SUCCESS"));
